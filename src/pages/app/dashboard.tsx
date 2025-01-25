@@ -23,6 +23,17 @@ export function Dashboard() {
     <>
       <Helmet title="Dashboard" />
       <h1>Dashboard</h1>
+      <h1 className="font-title-lg">font-title-lg</h1>
+      <h1 className="font-title-md">font-title-md</h1>
+      <h1 className="font-title-sm">font-title-sm</h1>
+      <h1 className="font-subtitle">font-subtitle</h1>
+      <h1 className="font-body-md">font-body-md</h1>
+      <h1 className="font-body-sm">font-body-sm</h1>
+      <h1 className="font-body-xs">font-body-xs</h1>
+      <h1 className="font-label-md">font-label-md</h1>
+      <h1 className="font-label-sm">font-label-sm</h1>
+      <h1 className="font-action-md">font-action-md</h1>
+      <h1 className="font-action-sm">font-action-sm</h1>
       <div className="grid grid-cols-3 gap-4 p-4">
         {colors.map((color) => (
           <div key={color}>

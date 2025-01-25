@@ -66,6 +66,10 @@ export default {
           500: 'hsl(var(--gray-500))',
         },
       },
+      fontFamily: {
+        dmSans: ['DM Sans', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -77,3 +77,38 @@
     @apply bg-background text-foreground;
   }
 }
+@layer components {
+  .font-title-lg {
+    @apply font-dmSans text-[28px] leading-[120%] font-bold
+  }
+  .font-title-md {
+    @apply font-dmSans text-[24px] leading-[120%] font-bold
+  }
+  .font-title-sm {
+    @apply font-dmSans text-[18px] leading-[120%] font-bold
+  }
+  .font-subtitle {
+    @apply font-poppins text-[16px] leading-[120%] font-semibold
+  }
+  .font-body-md {
+    @apply font-poppins text-[16px] leading-[120%] font-normal
+  }
+  .font-body-sm {
+    @apply font-poppins text-[14px] leading-[120%] font-normal
+  }
+  .font-body-xs {
+    @apply font-poppins text-[12px] leading-[120%] font-normal
+  }
+  .font-label-md {
+    @apply font-poppins text-[12px] leading-[120%] font-medium uppercase
+  }
+  .font-label-sm {
+    @apply font-poppins text-[10px] leading-[120%] font-medium uppercase
+  }
+  .font-action-md {
+    @apply font-poppins text-[16px] leading-[120%] font-medium
+  }
+  .font-action-sm {
+    @apply font-poppins text-[14px] leading-[120%] font-medium
+  }
+}
