@@ -1,3 +1,10 @@
+import { Helmet } from 'react-helmet-async'
+
 export function SignUp() {
-  return <h1>SignUp</h1>
+  return (
+    <>
+      <Helmet title="Cadastro" />
+      <h1>SignUp</h1>
+    </>
+  )
 }
