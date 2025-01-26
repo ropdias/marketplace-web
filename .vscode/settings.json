@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": false,
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.associations": { "*.css": "tailwindcss" },
+  "editor.quickSuggestions": { "strings": "on" },
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.quoteStyle": "double",
+  "emmet.preferences": {
+    "attributeQuotes": "double"
+  }
+}
