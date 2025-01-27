@@ -1,19 +1,38 @@
 import * as React from 'react'
 
+import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
-  ({ className, type, ...props }, ref) => {
+interface InputProps extends React.ComponentProps<'input'> {
+  iconBefore?: React.ElementType
+  iconAfter?: React.ElementType
+}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    { className, type, iconBefore: IconBefore, iconAfter: IconAfter, ...props },
+    ref,
+  ) => {
     return (
-      <input
-        type={type}
-        className={cn(
-          'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-          className,
+      <div className="group flex w-full items-center gap-2 border-b border-gray-100 focus-within:border-gray-400">
+        {IconBefore && (
+          <IconBefore
+            size={24}
+            className="text-gray-200 group-focus-within:text-red-500"
+          />
         )}
-        ref={ref}
-        {...props}
-      />
+        <input
+          type={type}
+          className={cn(
+            'flex h-12 w-full bg-transparent px-0.5 py-3.5 outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50',
+            getTailwindClass('font-body-md'),
+            className,
+          )}
+          ref={ref}
+          {...props}
+        />
+        {IconAfter && <IconAfter size={24} className="text-gray-300" />}
+      </div>
     )
   },
 )
