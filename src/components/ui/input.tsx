@@ -26,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="group flex flex-col">
         <Label
-          htmlFor="email"
+          htmlFor={props.id}
           className={cn(
             getTailwindClass('font-label-md'),
             'text-gray-300 group-focus-within:text-orange-base',
