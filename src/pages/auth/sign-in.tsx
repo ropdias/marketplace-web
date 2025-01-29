@@ -2,7 +2,6 @@ import { AccessIcon, Mail02Icon, ViewIcon } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 
 export function SignIn() {
@@ -20,16 +19,11 @@ export function SignIn() {
             </p>
           </div>
           <div>
-            <Label
-              htmlFor="email"
-              className={getTailwindClass('font-label-md')}
-            >
-              E-mail
-            </Label>
             <Input
               id="email"
               placeholder="Seu e-mail cadastrado"
               iconBefore={Mail02Icon}
+              labelText="E-mail"
             />
             <Input
               id="password"
@@ -37,6 +31,7 @@ export function SignIn() {
               placeholder="Sua senha de acesso"
               iconBefore={AccessIcon}
               iconAfter={ViewIcon}
+              labelText="Senha"
             />
           </div>
         </div>
