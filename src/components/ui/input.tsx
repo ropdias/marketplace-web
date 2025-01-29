@@ -1,3 +1,4 @@
+import { AlertCircleIcon } from 'hugeicons-react'
 import * as React from 'react'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -10,6 +11,7 @@ interface InputProps extends React.ComponentProps<'input'> {
   iconBefore?: React.ElementType
   iconAfter?: React.ElementType
   isFilled: boolean
+  errorMessage?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -21,6 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconAfter: IconAfter,
       labelText,
       isFilled = false,
+      errorMessage,
       ...props
     },
     ref,
@@ -41,8 +44,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <IconBefore
               size={24}
               className={cn(
-                'flex-shrink-0 group-focus-within:text-orange-base',
+                'flex-shrink-0',
                 isFilled ? 'text-orange-base' : 'text-gray-200',
+                errorMessage
+                  ? 'text-danger'
+                  : 'group-focus-within:text-orange-base',
               )}
             />
           )}
@@ -60,6 +66,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <IconAfter size={24} className="flex-shrink-0 text-gray-300" />
           )}
         </div>
+        {errorMessage && (
+          <div className="flex h-7 items-center gap-1 py-1.5">
+            <AlertCircleIcon size={16} className="flex-shrink-0 text-danger" />
+            <span
+              className={cn('text-danger', getTailwindClass('font-body-xs'))}
+            >
+              {errorMessage}
+            </span>
+          </div>
+        )}
       </div>
     )
   },

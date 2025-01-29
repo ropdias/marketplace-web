@@ -25,6 +25,7 @@ export function SignIn() {
               iconBefore={Mail02Icon}
               labelText="E-mail"
               isFilled
+              errorMessage="Helper text"
             />
             <Input
               id="password"
