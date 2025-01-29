@@ -9,6 +9,7 @@ interface InputProps extends React.ComponentProps<'input'> {
   labelText: string
   iconBefore?: React.ElementType
   iconAfter?: React.ElementType
+  isFilled: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -19,6 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconBefore: IconBefore,
       iconAfter: IconAfter,
       labelText,
+      isFilled = false,
       ...props
     },
     ref,
@@ -38,7 +40,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {IconBefore && (
             <IconBefore
               size={24}
-              className="flex-shrink-0 text-gray-200 group-focus-within:text-orange-base"
+              className={cn(
+                'flex-shrink-0 group-focus-within:text-orange-base',
+                isFilled ? 'text-orange-base' : 'text-gray-200',
+              )}
             />
           )}
           <input

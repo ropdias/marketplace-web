@@ -24,6 +24,7 @@ export function SignIn() {
               placeholder="Seu e-mail cadastrado"
               iconBefore={Mail02Icon}
               labelText="E-mail"
+              isFilled
             />
             <Input
               id="password"
@@ -32,6 +33,7 @@ export function SignIn() {
               iconBefore={AccessIcon}
               iconAfter={ViewIcon}
               labelText="Senha"
+              isFilled={false}
             />
           </div>
         </div>
