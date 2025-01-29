@@ -1,10 +1,17 @@
-import { AccessIcon, Mail02Icon, ViewIcon } from 'hugeicons-react'
+import { AccessIcon, Mail02Icon, ViewIcon, ViewOffIcon } from 'hugeicons-react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 
 export function SignIn() {
+  const [showPassword, setShowPassword] = useState(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev)
+  }
+
   return (
     <>
       <Helmet title="Login" />
@@ -18,7 +25,7 @@ export function SignIn() {
               Informe seu e-mail e senha para entrar
             </p>
           </div>
-          <div>
+          <div className="flex flex-col gap-5">
             <Input
               id="email"
               placeholder="Seu e-mail cadastrado"
@@ -29,12 +36,13 @@ export function SignIn() {
             />
             <Input
               id="password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Sua senha de acesso"
               iconBefore={AccessIcon}
-              iconAfter={ViewIcon}
+              iconAfter={showPassword ? ViewOffIcon : ViewIcon}
               labelText="Senha"
               isFilled={false}
+              onClickIconAfter={togglePasswordVisibility}
             />
           </div>
         </div>

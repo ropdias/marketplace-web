@@ -10,6 +10,7 @@ interface InputProps extends React.ComponentProps<'input'> {
   labelText: string
   iconBefore?: React.ElementType
   iconAfter?: React.ElementType
+  onClickIconAfter?: () => void
   isFilled: boolean
   errorMessage?: string
 }
@@ -24,6 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       labelText,
       isFilled = false,
       errorMessage,
+      onClickIconAfter,
       ...props
     },
     ref,
@@ -63,7 +65,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {IconAfter && (
-            <IconAfter size={24} className="flex-shrink-0 text-gray-300" />
+            <IconAfter
+              size={24}
+              className="flex-shrink-0 text-gray-300"
+              onClick={onClickIconAfter}
+            />
           )}
         </div>
         {errorMessage && (
