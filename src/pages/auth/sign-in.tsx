@@ -1,9 +1,17 @@
-import { AccessIcon, Mail02Icon, ViewIcon, ViewOffIcon } from 'hugeicons-react'
+import {
+  AccessIcon,
+  ArrowRight02Icon,
+  Mail02Icon,
+  ViewIcon,
+  ViewOffIcon,
+} from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
+import { cn } from '@/lib/utils'
 
 export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -17,11 +25,13 @@ export function SignIn() {
       <Helmet title="Login" />
       <div className="flex min-h-full flex-col justify-between gap-4 rounded-[32px] bg-white px-20 py-[72px]">
         <div className="flex flex-col gap-12">
-          <div>
+          <div className="flex flex-col gap-2">
             <h1 className={getTailwindClass('font-title-md')}>
               Acesse sua conta
             </h1>
-            <p className={getTailwindClass('font-body-sm')}>
+            <p
+              className={cn('text-gray-300', getTailwindClass('font-body-sm'))}
+            >
               Informe seu e-mail e senha para entrar
             </p>
           </div>
@@ -45,8 +55,20 @@ export function SignIn() {
               onClickIconAfter={togglePasswordVisibility}
             />
           </div>
+          <Button>
+            Acessar
+            <ArrowRight02Icon />
+          </Button>
         </div>
-        <div>teste</div>
+        <div className="flex flex-col justify-between gap-5">
+          <p className={cn('text-gray-300', getTailwindClass('font-body-md'))}>
+            Ainda não tem uma conta?
+          </p>
+          <Button variant="outline">
+            Cadastrar
+            <ArrowRight02Icon />
+          </Button>
+        </div>
       </div>
     </>
   )
