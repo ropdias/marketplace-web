@@ -28,7 +28,7 @@ export function AuthLayout() {
           className="object-contain"
         />
       </div>
-      <div className="h-screen min-w-[611px] flex-shrink-0 p-6">
+      <div className="min-h-screen min-w-[611px] flex-shrink-0 p-6">
         <Outlet />
       </div>
     </div>
