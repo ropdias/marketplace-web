@@ -26,7 +26,9 @@ export function SignIn() {
       <div className="flex min-h-full flex-col justify-between gap-4 rounded-[32px] bg-white px-20 py-[72px]">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-2">
-            <h1 className={getTailwindClass('font-title-md')}>
+            <h1
+              className={cn('text-gray-500', getTailwindClass('font-title-md'))}
+            >
               Acesse sua conta
             </h1>
             <p
