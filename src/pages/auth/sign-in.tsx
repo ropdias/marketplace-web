@@ -7,6 +7,7 @@ import {
 } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -66,9 +67,11 @@ export function SignIn() {
           <p className={cn('text-gray-300', getTailwindClass('font-body-md'))}>
             Ainda não tem uma conta?
           </p>
-          <Button variant="outline">
-            Cadastrar
-            <ArrowRight02Icon />
+          <Button asChild variant="outline">
+            <Link to="/sign-up">
+              Cadastrar
+              <ArrowRight02Icon />
+            </Link>
           </Button>
         </div>
       </div>

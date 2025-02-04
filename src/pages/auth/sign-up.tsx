@@ -10,6 +10,7 @@ import {
 } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { Link } from 'react-router'
 
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
@@ -161,9 +162,11 @@ export function SignUp() {
           <p className={cn('text-gray-300', getTailwindClass('font-body-md'))}>
             Já tem uma conta
           </p>
-          <Button variant="outline">
-            Acessar
-            <ArrowRight02Icon />
+          <Button asChild variant="outline">
+            <Link to="/sign-in">
+              Acessar
+              <ArrowRight02Icon />
+            </Link>
           </Button>
         </div>
       </div>
