@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -7,12 +8,21 @@ import {
 } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+
+const signInFormSchema = z.object({
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+})
+
+type SignInFormInputs = z.infer<typeof signInFormSchema>
 
 export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
@@ -20,6 +30,16 @@ export function SignIn() {
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
   }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<SignInFormInputs>({
+    resolver: zodResolver(signInFormSchema),
+  })
+
+  async function handleSignIn(data: SignInFormInputs) {}
 
   return (
     <>
@@ -38,27 +58,31 @@ export function SignIn() {
               Informe seu e-mail e senha para entrar
             </p>
           </div>
-          <div className="flex flex-col gap-5">
-            <Input
-              id="email"
-              placeholder="Seu e-mail cadastrado"
-              iconBefore={Mail02Icon}
-              labelText="E-mail"
-              isFilled
-              errorMessage="Helper text"
-            />
-            <Input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Sua senha de acesso"
-              iconBefore={AccessIcon}
-              iconAfter={showPassword ? ViewOffIcon : ViewIcon}
-              labelText="Senha"
-              isFilled={false}
-              onClickIconAfter={togglePasswordVisibility}
-            />
-          </div>
-          <Button>
+          <form onSubmit={handleSubmit(handleSignIn)}>
+            <div className="flex flex-col gap-5">
+              <Input
+                id="email"
+                placeholder="Seu e-mail cadastrado"
+                iconBefore={Mail02Icon}
+                labelText="E-mail"
+                isFilled
+                errorMessage="Helper text"
+                {...register('email')}
+              />
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Sua senha de acesso"
+                iconBefore={AccessIcon}
+                iconAfter={showPassword ? ViewOffIcon : ViewIcon}
+                labelText="Senha"
+                isFilled={false}
+                onClickIconAfter={togglePasswordVisibility}
+                {...register('password')}
+              />
+            </div>
+          </form>
+          <Button disabled={isSubmitting} type="submit">
             Acessar
             <ArrowRight02Icon />
           </Button>
