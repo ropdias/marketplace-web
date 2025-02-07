@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import { AppLayout } from './pages/_layouts/app'
 import { AuthLayout } from './pages/_layouts/auth'
 import { Dashboard } from './pages/app/dashboard'
+import { Products } from './pages/app/products'
 import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
 
@@ -11,6 +12,7 @@ export function AppRoutes() {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="/products" element={<Products />} />
       </Route>
       <Route path="/" element={<AuthLayout />}>
         <Route path="/sign-in" element={<SignIn />} />
