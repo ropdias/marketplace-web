@@ -13,7 +13,9 @@ export function MenuLink(props: MenuLinkProps) {
     <Link
       data-current={isActive}
       className={cn(
-        'flex h-10 w-[140px] items-center justify-center gap-2 rounded-[10px] px-4 text-gray-300 hover:text-orange-base',
+        'flex h-10 w-[140px] items-center justify-center gap-2 rounded-[10px] px-4 text-gray-300',
+        'hover:text-orange-base',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2',
         isActive && 'bg-shape text-orange-base',
         isActive
           ? getTailwindClass('font-action-sm')
