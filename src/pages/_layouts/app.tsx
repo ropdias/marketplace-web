@@ -4,11 +4,9 @@ import { Header } from '@/components/header'
 
 export function AppLayout() {
   return (
-    <div className="flex min-h-screen flex-col antialiased">
+    <div className="flex min-h-screen min-w-[66.875rem] flex-col gap-16 antialiased">
       <Header />
-      <div className="flex flex-1 flex-col gap-10 px-[168px] py-16">
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   )
 }
