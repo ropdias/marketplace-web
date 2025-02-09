@@ -2,6 +2,7 @@ import { ChartHistogramIcon, PackageIcon, PlusSignIcon } from 'hugeicons-react'
 
 import { MenuLink } from './menu-link'
 import { Button } from './ui/button'
+import { UserMenu } from './user-menu'
 
 export function Header() {
   return (
@@ -22,7 +23,7 @@ export function Header() {
           <PlusSignIcon />
           Novo Produto
         </Button>
-        User
+        <UserMenu />
       </div>
     </div>
   )
