@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { Label } from './label'
 
 interface InputProps extends React.ComponentProps<'input'> {
-  labelText: string
+  labelText?: string
   iconBefore?: React.ElementType
   iconAfter?: React.ElementType
   onClickIconAfter?: () => void
@@ -32,15 +32,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     return (
       <div className="group flex flex-col">
-        <Label
-          htmlFor={props.id}
-          className={cn(
-            getTailwindClass('font-label-md'),
-            'text-gray-300 group-focus-within:text-orange-base',
-          )}
-        >
-          {labelText}
-        </Label>
+        {labelText && (
+          <Label
+            htmlFor={props.id}
+            className={cn(
+              getTailwindClass('font-label-md'),
+              'text-gray-300 group-focus-within:text-orange-base',
+            )}
+          >
+            {labelText}
+          </Label>
+        )}
         <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3.5 group-focus-within:border-gray-400">
           {IconBefore && (
             <IconBefore
