@@ -1,4 +1,4 @@
-import { Search01Icon } from 'hugeicons-react'
+import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 
 import { Button } from '@/components/ui/button'
@@ -36,10 +36,20 @@ export function Products() {
                 id="search"
                 isFilled={false}
                 placeholder="Pesquisar"
-                iconBefore={Search01Icon}
+                iconLeft={Search01Icon}
               ></Input>
               <Select>
-                <SelectTrigger className="w-full">
+                <SelectTrigger iconLeft={SaleTag02Icon}>
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="announced">Anunciado</SelectItem>
+                  <SelectItem value="sold">Vendido</SelectItem>
+                  <SelectItem value="cancelled">Cancelado</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger labelText="TESTE">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
