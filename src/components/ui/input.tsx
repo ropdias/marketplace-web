@@ -8,9 +8,9 @@ import { Label } from './label'
 
 interface InputProps extends React.ComponentProps<'input'> {
   labelText?: string
-  iconBefore?: React.ElementType
-  iconAfter?: React.ElementType
-  onClickIconAfter?: () => void
+  iconLeft?: React.ElementType
+  iconRight?: React.ElementType
+  onClickIconRight?: () => void
   isFilled: boolean
   errorMessage?: string
 }
@@ -20,12 +20,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       className,
       type,
-      iconBefore: IconBefore,
-      iconAfter: IconAfter,
+      iconLeft: IconLeft,
+      iconRight: IconRight,
       labelText,
       isFilled = false,
       errorMessage,
-      onClickIconAfter,
+      onClickIconRight,
       ...props
     },
     ref,
@@ -44,8 +44,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </Label>
         )}
         <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3.5 group-focus-within:border-gray-400">
-          {IconBefore && (
-            <IconBefore
+          {IconLeft && (
+            <IconLeft
               size={24}
               className={cn(
                 'flex-shrink-0',
@@ -66,11 +66,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
           />
-          {IconAfter && (
-            <IconAfter
+          {IconRight && (
+            <IconRight
               size={24}
               className="flex-shrink-0 text-gray-300"
-              onClick={onClickIconAfter}
+              onClick={onClickIconRight}
             />
           )}
         </div>

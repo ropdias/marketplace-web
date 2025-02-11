@@ -103,14 +103,14 @@ export function SignUp() {
               <Input
                 id="name"
                 placeholder="Seu nome completo"
-                iconBefore={UserIcon}
+                iconLeft={UserIcon}
                 labelText="Nome"
                 isFilled={false}
               />
               <Input
                 id="phone"
                 placeholder="(00) 00000-0000"
-                iconBefore={CallIcon}
+                iconLeft={CallIcon}
                 labelText="Telefone"
                 isFilled={false}
               />
@@ -127,7 +127,7 @@ export function SignUp() {
               <Input
                 id="email"
                 placeholder="Seu e-mail de acesso"
-                iconBefore={Mail02Icon}
+                iconLeft={Mail02Icon}
                 labelText="E-mail"
                 isFilled={false}
               />
@@ -135,21 +135,21 @@ export function SignUp() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Senha de acesso"
-                iconBefore={AccessIcon}
-                iconAfter={showPassword ? ViewOffIcon : ViewIcon}
+                iconLeft={AccessIcon}
+                iconRight={showPassword ? ViewOffIcon : ViewIcon}
                 labelText="Senha"
                 isFilled={false}
-                onClickIconAfter={togglePasswordVisibility}
+                onClickIconRight={togglePasswordVisibility}
               />
               <Input
                 id="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Senha de acesso"
-                iconBefore={AccessIcon}
-                iconAfter={showConfirmPassword ? ViewOffIcon : ViewIcon}
+                iconLeft={AccessIcon}
+                iconRight={showConfirmPassword ? ViewOffIcon : ViewIcon}
                 labelText="Confirmar Senha"
                 isFilled={false}
-                onClickIconAfter={toggleConfirmPasswordVisibility}
+                onClickIconRight={toggleConfirmPasswordVisibility}
               />
             </div>
             <Button>

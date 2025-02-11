@@ -63,7 +63,7 @@ export function SignIn() {
               <Input
                 id="email"
                 placeholder="Seu e-mail cadastrado"
-                iconBefore={Mail02Icon}
+                iconLeft={Mail02Icon}
                 labelText="E-mail"
                 isFilled
                 errorMessage="Helper text"
@@ -73,11 +73,11 @@ export function SignIn() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Sua senha de acesso"
-                iconBefore={AccessIcon}
-                iconAfter={showPassword ? ViewOffIcon : ViewIcon}
+                iconLeft={AccessIcon}
+                iconRight={showPassword ? ViewOffIcon : ViewIcon}
                 labelText="Senha"
                 isFilled={false}
-                onClickIconAfter={togglePasswordVisibility}
+                onClickIconRight={togglePasswordVisibility}
                 {...register('password')}
               />
             </div>
