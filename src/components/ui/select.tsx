@@ -1,6 +1,11 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
-import { ArrowDown01Icon, ArrowUp01Icon } from 'hugeicons-react'
-import { Check, ChevronDown, ChevronUp } from 'lucide-react'
+import {
+  ArrowDown01Icon,
+  ArrowUp01Icon,
+  Cancel01Icon,
+  Tick02Icon,
+} from 'hugeicons-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -10,6 +15,8 @@ interface SelectTriggerProps
   extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
   labelText?: string
   iconLeft?: React.ElementType
+  onClear?: () => void
+  selectedValue: string
 }
 
 const Select = SelectPrimitive.Root
@@ -21,45 +28,77 @@ const SelectValue = SelectPrimitive.Value
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
->(({ className, children, labelText, iconLeft: IconLeft, ...props }, ref) => (
-  <SelectPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'group flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+>(
+  (
+    {
       className,
-    )}
-    {...props}
-  >
-    {labelText && (
-      <div
-        className={cn(
-          'flex w-full items-start text-gray-300 group-data-[state=open]:text-red-500',
-          getTailwindClass('font-label-md'),
-        )}
-      >
-        {labelText}
-      </div>
-    )}
+      children,
+      labelText,
+      iconLeft: IconLeft,
+      onClear,
+      selectedValue,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <div className="relative">
+        <SelectPrimitive.Trigger
+          ref={ref}
+          className={cn(
+            'group flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+            className,
+          )}
+          {...props}
+        >
+          {labelText && (
+            <div
+              className={cn(
+                'flex w-full items-start text-gray-300 group-data-[state=open]:text-red-500',
+                getTailwindClass('font-label-md'),
+              )}
+            >
+              {labelText}
+            </div>
+          )}
 
-    <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3.5 group-data-[state=open]:border-gray-400">
-      {IconLeft && (
-        <IconLeft
-          size={24}
-          className="h-6 w-6 shrink-0 text-orange-base group-data-[placeholder]:text-gray-200 group-data-[state=open]:text-orange-base"
-        />
-      )}
-      <div className="flex-1 text-left text-gray-400 group-data-[placeholder]:text-gray-200">
-        {children}
+          <div className="relative flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3.5 group-data-[state=open]:border-gray-400">
+            {IconLeft && (
+              <IconLeft
+                size={24}
+                className="h-6 w-6 shrink-0 text-orange-base group-data-[placeholder]:text-gray-200 group-data-[state=open]:text-orange-base"
+              />
+            )}
+            <div
+              className={cn(
+                'flex-1 text-left text-gray-400 group-data-[placeholder]:text-gray-200',
+                getTailwindClass('font-body-md'),
+              )}
+            >
+              {children}
+            </div>
+            <SelectPrimitive.Icon asChild>
+              <div className="shrink-0">
+                <ArrowDown01Icon className="h-6 w-6 text-gray-300 group-data-[state=open]:hidden" />
+                <ArrowUp01Icon className="hidden h-6 w-6 text-gray-300 group-data-[state=open]:block" />
+              </div>
+            </SelectPrimitive.Icon>
+          </div>
+        </SelectPrimitive.Trigger>
+        {selectedValue && (
+          <button
+            onClick={() => {
+              if (onClear) onClear()
+            }}
+            className="absolute bottom-3 right-[2.125rem] z-40 block h-6 w-6 rounded-full bg-shape p-1 text-gray-300"
+          >
+            <Cancel01Icon className="h-4 w-4" />
+          </button>
+        )}
       </div>
-      <SelectPrimitive.Icon asChild>
-        <div className="shrink-0">
-          <ArrowDown01Icon className="h-6 w-6 text-gray-300 group-data-[state=open]:hidden" />
-          <ArrowUp01Icon className="hidden h-6 w-6 text-gray-300 group-data-[state=open]:block" />
-        </div>
-      </SelectPrimitive.Icon>
-    </div>
-  </SelectPrimitive.Trigger>
-))
+    )
+  },
+)
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
 const SelectScrollUpButton = React.forwardRef<
@@ -148,18 +187,18 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'flex w-full cursor-default select-none items-center justify-between gap-2 p-4 text-gray-300 outline-none focus:text-orange-dark data-[disabled]:pointer-events-none data-[state=checked]:text-orange-base data-[disabled]:opacity-50',
+      getTailwindClass('font-body-sm'),
       className,
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    <span className="flex h-6 w-6 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Tick02Icon className="h-6 w-6" />
       </SelectPrimitive.ItemIndicator>
     </span>
-
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ))
 SelectItem.displayName = SelectPrimitive.Item.displayName

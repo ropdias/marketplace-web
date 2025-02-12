@@ -1,4 +1,5 @@
 import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,19 @@ import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 export function Products() {
+  const [selectedValue, setSelectedValue] = useState<string>('')
+  const [selectedValue2, setSelectedValue2] = useState<string>('')
+
+  const clearSelection = () => {
+    setSelectedValue('')
+  }
+
+  const clearSelection2 = () => {
+    setSelectedValue2('')
+  }
+
+  console.log(selectedValue)
+
   return (
     <div className="m-auto flex w-full max-w-[66.875rem] flex-1 flex-col gap-10 px-5">
       <Helmet title="Produtos" />
@@ -38,8 +52,12 @@ export function Products() {
                 placeholder="Pesquisar"
                 iconLeft={Search01Icon}
               ></Input>
-              <Select>
-                <SelectTrigger iconLeft={SaleTag02Icon}>
+              <Select value={selectedValue} onValueChange={setSelectedValue}>
+                <SelectTrigger
+                  iconLeft={SaleTag02Icon}
+                  onClear={clearSelection}
+                  selectedValue={selectedValue}
+                >
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -48,8 +66,12 @@ export function Products() {
                   <SelectItem value="cancelled">Cancelado</SelectItem>
                 </SelectContent>
               </Select>
-              <Select>
-                <SelectTrigger labelText="TESTE">
+              <Select value={selectedValue2} onValueChange={setSelectedValue2}>
+                <SelectTrigger
+                  labelText="TESTE"
+                  onClear={clearSelection2}
+                  selectedValue={selectedValue2}
+                >
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
