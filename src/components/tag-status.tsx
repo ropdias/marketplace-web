@@ -1,10 +1,10 @@
 import { Badge } from './ui/badge'
 
-interface BadgeStatusProps {
+interface TagStatusProps {
   status: 'anunciado' | 'vendido' | 'desativado'
 }
 
-export function BadgeStatus({ status }: BadgeStatusProps) {
+export function TagStatus({ status }: TagStatusProps) {
   return (
     <Badge status={status}>
       {status.charAt(0).toUpperCase() + status.slice(1)}

@@ -1,8 +1,8 @@
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
-import { BadgeCategory } from './badge-category'
-import { BadgeStatus } from './badge-status'
+import { TagCategory } from './tag-category'
+import { TagStatus } from './tag-status'
 
 interface ProductItemProps {
   imgSrc: string
@@ -22,7 +22,7 @@ export function ProductItem({
   category,
 }: ProductItemProps) {
   return (
-    <div className="relative flex w-full flex-col gap-1 rounded-[20px] bg-white p-1">
+    <div className="relative flex w-full flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base">
       <img
         src={imgSrc}
         alt={`Imagem do ${productName}`}
@@ -61,8 +61,8 @@ export function ProductItem({
         </p>
       </div>
       <div className="absolute right-3 top-3 flex gap-1">
-        <BadgeStatus status={status} />
-        <BadgeCategory category={category} />
+        <TagStatus status={status} />
+        <TagCategory category={category} />
       </div>
     </div>
   )
