@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 export function Dashboard() {
   return (
-    <div className="m-auto flex w-full max-w-[66.875rem] flex-1 flex-col gap-10 px-5">
+    <div className="m-auto flex w-full max-w-[66.875rem] flex-1 flex-col gap-10 px-5 pb-5">
       <Helmet title="Dashboard" />
       <div className="flex flex-col gap-2">
         <p className={cn('text-gray-500', getTailwindClass('font-title-md'))}>
