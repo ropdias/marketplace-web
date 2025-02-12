@@ -22,7 +22,7 @@ export function ProductItem({
   category,
 }: ProductItemProps) {
   return (
-    <div className="relative flex w-full flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base">
+    <div className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base">
       <img
         src={imgSrc}
         alt={`Imagem do ${productName}`}
