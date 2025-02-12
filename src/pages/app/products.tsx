@@ -32,7 +32,7 @@ export function Products() {
           Seus Produtos
         </p>
         <p className={cn('text-gray-300', getTailwindClass('font-body-sm'))}>
-          Acesse gerencie a sua lista de produtos à venda
+          Acesse a sua lista de produtos à venda
         </p>
       </div>
       <div className="flex-start flex gap-6">
