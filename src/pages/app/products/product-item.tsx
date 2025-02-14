@@ -1,9 +1,12 @@
+import { Link } from 'react-router'
+
 import { TagCategory } from '@/components/tag-category'
 import { TagStatus } from '@/components/tag-status'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 interface ProductItemProps {
+  id: string
   imgSrc: string
   productName: string
   productPrice: number
@@ -13,6 +16,7 @@ interface ProductItemProps {
 }
 
 export function ProductItem({
+  id,
   imgSrc,
   productName,
   productPrice,
@@ -21,7 +25,10 @@ export function ProductItem({
   category,
 }: ProductItemProps) {
   return (
-    <div className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base">
+    <Link
+      to={`/product/${id}/edit`}
+      className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base"
+    >
       <img
         src={imgSrc}
         alt={`Imagem do ${productName}`}
@@ -63,6 +70,6 @@ export function ProductItem({
         <TagStatus status={status} />
         <TagCategory category={category} />
       </div>
-    </div>
+    </Link>
   )
 }

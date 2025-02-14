@@ -69,6 +69,7 @@ export function Products() {
         </div>
         <div className="grid w-full grid-cols-2 grid-rows-3 gap-4">
           <ProductItem
+            id="1"
             imgSrc="picture-1.png"
             productName="Sofá"
             productPrice={1200.9}
@@ -77,6 +78,7 @@ export function Products() {
             status="anunciado"
           />
           <ProductItem
+            id="2"
             imgSrc="picture-2.png"
             productName="Camiseta masculina"
             productPrice={35.89}
@@ -85,6 +87,7 @@ export function Products() {
             status="anunciado"
           />
           <ProductItem
+            id="3"
             imgSrc="picture-3.png"
             productName="Kit utensílios"
             productPrice={86.79}
@@ -93,6 +96,7 @@ export function Products() {
             status="anunciado"
           />
           <ProductItem
+            id="4"
             imgSrc="picture-4.png"
             productName="Kit de cremes"
             productPrice={159.9}
@@ -101,6 +105,7 @@ export function Products() {
             status="anunciado"
           />
           <ProductItem
+            id="5"
             imgSrc="picture-5.png"
             productName="Caderno de desenho"
             productPrice={56}
@@ -109,6 +114,7 @@ export function Products() {
             status="vendido"
           />
           <ProductItem
+            id="6"
             imgSrc="picture-6.png"
             productName="Carro de brinquedo"
             productPrice={24.6}
