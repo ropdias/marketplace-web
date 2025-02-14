@@ -1,4 +1,5 @@
 import { ChartHistogramIcon, PackageIcon, PlusSignIcon } from 'hugeicons-react'
+import { Link } from 'react-router'
 
 import { MenuLink } from './menu-link'
 import { Button } from './ui/button'
@@ -19,9 +20,11 @@ export function Header() {
         </MenuLink>
       </nav>
       <div className="flex h-auto w-[221px] items-center justify-between">
-        <Button variant={'solid'} size={'small'}>
-          <PlusSignIcon />
-          Novo Produto
+        <Button asChild variant={'solid'} size={'small'}>
+          <Link to="/product/create">
+            <PlusSignIcon />
+            Novo Produto
+          </Link>
         </Button>
         <UserMenu />
       </div>
