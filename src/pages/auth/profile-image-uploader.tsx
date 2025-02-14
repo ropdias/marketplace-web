@@ -35,8 +35,9 @@ export function ProfileImageUploader() {
               <img
                 src={image}
                 alt="Imagem Carregada"
-                className="h-full w-full rounded-[12px] object-cover transition duration-100 group-hover:brightness-50"
+                className="h-full w-full rounded-[12px] object-cover"
               />
+              <div className="absolute inset-0 rounded-[12px] bg-black opacity-0 group-hover:opacity-60" />
               <ImageUploadIcon
                 size={32}
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 transition duration-100 group-hover:opacity-100"
