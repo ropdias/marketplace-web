@@ -1,8 +1,7 @@
+import { TagCategory } from '@/components/tag-category'
+import { TagStatus } from '@/components/tag-status'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-
-import { TagCategory } from './tag-category'
-import { TagStatus } from './tag-status'
 
 interface ProductItemProps {
   imgSrc: string

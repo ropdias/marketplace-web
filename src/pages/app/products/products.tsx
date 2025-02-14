@@ -2,7 +2,6 @@ import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
-import { ProductItem } from '@/components/product-item'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -14,6 +13,8 @@ import {
 } from '@/components/ui/select'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+
+import { ProductItem } from './product-item'
 
 export function Products() {
   const [selectedValue, setSelectedValue] = useState<string>('')
