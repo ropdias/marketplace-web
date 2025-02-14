@@ -1,9 +1,10 @@
 import { SaleTag02Icon, Store04Icon, UserMultipleIcon } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 
-import { DashboardItem } from '@/components/dashboard-item'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+
+import { DashboardItem } from './dashboard-item'
 
 export function Dashboard() {
   return (
