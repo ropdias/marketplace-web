@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
+import { ProductImageUploader } from './product-image-uploader'
+
 export function ProductCreate() {
   return (
     <div className="m-auto flex w-full max-w-[66.875rem] flex-1 flex-col gap-10 px-5 pb-5">
@@ -15,7 +17,9 @@ export function ProductCreate() {
           Cadastre um produto para venda no marketplace
         </p>
       </div>
-      <div className="flex-start flex gap-6"></div>
+      <div className="flex-start flex gap-6">
+        <ProductImageUploader />
+      </div>
     </div>
   )
 }
