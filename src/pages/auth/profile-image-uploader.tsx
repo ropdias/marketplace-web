@@ -16,7 +16,7 @@ export function ProfileImageUploader() {
   }
 
   return (
-    <div className="h-[120px] w-[120px] rounded-[12px] bg-shape">
+    <div className="h-[7.5rem] w-[7.5rem] rounded-[12px] bg-shape">
       <input
         type="file"
         id="profilePicture"

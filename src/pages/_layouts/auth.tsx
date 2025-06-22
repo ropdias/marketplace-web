@@ -6,9 +6,13 @@ import { cn } from '@/lib/utils'
 export function AuthLayout() {
   return (
     <div className="flex min-h-screen antialiased">
-      <div className="flex h-full w-[755px] min-w-[347px] flex-1 flex-col justify-between gap-4">
+      <div className="flex h-full w-[47.1875rem] shrink-0 flex-col justify-between gap-4">
         <div className="flex gap-5 px-10 pt-10">
-          <img src="/logo.svg" alt="Logo" className="h-[69px] w-[90px]" />
+          <img
+            src="/logo.svg"
+            alt="Logo"
+            className="h-[4.3125rem] w-[5.625rem]"
+          />
           <div className="flex flex-col justify-center gap-1">
             <span
               className={cn(getTailwindClass('font-title-md'), 'text-gray-500')}
@@ -28,7 +32,7 @@ export function AuthLayout() {
           className="object-contain"
         />
       </div>
-      <div className="min-h-screen min-w-[611px] flex-shrink-0 p-6">
+      <div className="min-h-screen min-w-[38.1875rem] grow p-6">
         <Outlet />
       </div>
     </div>

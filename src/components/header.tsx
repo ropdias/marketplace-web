@@ -19,7 +19,7 @@ export function Header() {
           Produtos
         </MenuLink>
       </nav>
-      <div className="flex h-auto w-[221px] items-center justify-between">
+      <div className="flex h-auto w-auto items-center justify-between gap-4">
         <Button asChild variant={'solid'} size={'small'}>
           <Link to="/product/create">
             <PlusSignIcon />

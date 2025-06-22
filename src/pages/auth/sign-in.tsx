@@ -44,7 +44,7 @@ export function SignIn() {
   return (
     <>
       <Helmet title="Login" />
-      <div className="flex min-h-full flex-col justify-between gap-20 rounded-[32px] bg-white px-20 py-[72px]">
+      <div className="flex min-h-full flex-col justify-between gap-20 rounded-[32px] bg-white px-20 py-[4.5rem]">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-2">
             <h1

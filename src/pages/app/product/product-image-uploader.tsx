@@ -18,7 +18,7 @@ export function ProductImageUploader() {
   }
 
   return (
-    <div className="h-[340px] w-[415px] rounded-[20px] bg-shape">
+    <div className="h-[21.25rem] w-[25.9375rem] rounded-[20px] bg-shape">
       <input
         type="file"
         id="profilePicture"

@@ -33,7 +33,7 @@ export function SignUp() {
   return (
     <>
       <Helmet title="Cadastro" />
-      <div className="flex min-h-full flex-col justify-between gap-20 rounded-[32px] bg-white px-20 py-[72px]">
+      <div className="flex min-h-full flex-col justify-between gap-20 rounded-[32px] bg-white px-20 py-[4.5rem]">
         <div className="flex flex-col gap-10">
           <div className="flex flex-col gap-2">
             <h1
