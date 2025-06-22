@@ -27,7 +27,7 @@ export function ProductItem({
   return (
     <Link
       to={`/product/${id}/edit`}
-      className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] border-2 border-transparent bg-white p-1 transition-colors hover:border-blue-base"
+      className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] bg-white p-1 outline-none transition-shadow hover:ring-2 hover:ring-blue-base focus-visible:ring-2 focus-visible:ring-blue-base"
     >
       <img
         src={imgSrc}
