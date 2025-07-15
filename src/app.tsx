@@ -2,10 +2,10 @@ import './index.css'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { BrowserRouter } from 'react-router'
+import { RouterProvider } from 'react-router'
 
 import { queryClient } from './lib/react-query'
-import { AppRoutes } from './routes'
+import { router } from './routes'
 
 export function App() {
   return (
@@ -23,9 +23,7 @@ export function App() {
         />
       </Helmet>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </HelmetProvider>
   )

@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 
 import { AppLayout } from './pages/_layouts/app'
 import { AuthLayout } from './pages/_layouts/auth'
@@ -10,20 +10,27 @@ import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
 import { NotFound } from './pages/not-found'
 
-export function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/create" element={<ProductCreate />} />
-        <Route path="/product/:id/edit" element={<ProductEdit />} />
-      </Route>
-      <Route path="/" element={<AuthLayout />}>
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-      </Route>
-      <Route path="/*" element={<NotFound />} />
-    </Routes>
-  )
-}
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    Component: AppLayout,
+    children: [
+      { index: true, Component: Dashboard },
+      { path: '/products', Component: Products },
+      { path: '/product/create', Component: ProductCreate },
+      { path: '/product/:id/edit', Component: ProductEdit },
+    ],
+  },
+  {
+    path: '/',
+    Component: AuthLayout,
+    children: [
+      { path: '/sign-in', Component: SignIn },
+      { path: '/sign-up', Component: SignUp },
+    ],
+  },
+  {
+    path: '*',
+    Component: NotFound,
+  },
+])
