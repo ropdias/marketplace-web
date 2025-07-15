@@ -8,6 +8,7 @@ import { ProductEdit } from './pages/app/product/product-edit'
 import { Products } from './pages/app/products/products'
 import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
+import { NotFound } from './pages/not-found'
 
 export function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export function AppRoutes() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
       </Route>
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   )
 }
