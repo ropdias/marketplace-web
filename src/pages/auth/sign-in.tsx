@@ -34,10 +34,17 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm<SignInFormInputs>({
     resolver: zodResolver(signInFormSchema),
   })
+
+  const emailValue = watch('email')
+  const passwordValue = watch('password')
+
+  const isEmailFilled = !!emailValue
+  const isPasswordFilled = !!passwordValue
 
   async function handleSignIn(data: SignInFormInputs) {}
 
@@ -58,16 +65,16 @@ export function SignIn() {
               Informe seu e-mail e senha para entrar
             </p>
           </div>
-          <form onSubmit={handleSubmit(handleSignIn)}>
+          <form id="sign-in-form" onSubmit={handleSubmit(handleSignIn)}>
             <div className="flex flex-col gap-5">
               <Input
                 id="email"
                 placeholder="Seu e-mail cadastrado"
                 iconLeft={Mail02Icon}
                 labelText="E-mail"
-                isFilled
-                errorMessage="Helper text"
+                isFilled={isEmailFilled}
                 {...register('email')}
+                {...(errors.email && { errorMessage: errors.email.message })}
               />
               <Input
                 id="password"
@@ -76,13 +83,16 @@ export function SignIn() {
                 iconLeft={AccessIcon}
                 iconRight={showPassword ? ViewOffIcon : ViewIcon}
                 labelText="Senha"
-                isFilled={false}
+                isFilled={isPasswordFilled}
                 onClickIconRight={togglePasswordVisibility}
                 {...register('password')}
+                {...(errors.password && {
+                  errorMessage: errors.password.message,
+                })}
               />
             </div>
           </form>
-          <Button disabled={isSubmitting} type="submit">
+          <Button disabled={isSubmitting} type="submit" form="sign-in-form">
             Acessar
             <ArrowRight02Icon />
           </Button>
