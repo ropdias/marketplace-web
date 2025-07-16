@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -9,7 +10,9 @@ import {
 } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,6 +20,28 @@ import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 import { ProfileImageUploader } from './profile-image-uploader'
+
+const signUpFormSchema = z
+  .object({
+    name: z.string().min(3, 'O nome deve ter no mínimo 3 caracteres'),
+    phone: z
+      .string()
+      .regex(
+        /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/,
+        'Telefone inválido, use o formato (XX) XXXXX-XXXX',
+      ),
+    email: z.string().email('E-mail inválido'),
+    password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+    confirmPassword: z
+      .string()
+      .min(6, 'A senha deve ter no mínimo 6 caracteres'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'As senhas não coincidem',
+    path: ['confirmPassword'],
+  })
+
+type SignUpFormInputs = z.infer<typeof signUpFormSchema>
 
 export function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
@@ -28,6 +53,31 @@ export function SignUp() {
 
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword((prev) => !prev)
+  }
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting, errors },
+  } = useForm<SignUpFormInputs>({
+    resolver: zodResolver(signUpFormSchema),
+  })
+
+  const nameValue = watch('name')
+  const phoneValue = watch('phone')
+  const emailValue = watch('email')
+  const passwordValue = watch('password')
+  const confirmPasswordValue = watch('confirmPassword')
+
+  const isNameFilled = !!nameValue
+  const isPhoneFilled = !!phoneValue
+  const isEmailFilled = !!emailValue
+  const isPasswordFilled = !!passwordValue
+  const isConfirmPasswordFilled = !!confirmPasswordValue
+
+  async function handleSignUp(data: SignUpFormInputs) {
+    console.log(data)
   }
 
   return (
@@ -47,7 +97,10 @@ export function SignUp() {
               Informe os seus dados pessoais e de acesso
             </p>
           </div>
-          <div className="flex flex-col gap-12">
+          <form
+            className="flex flex-col gap-12"
+            onSubmit={handleSubmit(handleSignUp)}
+          >
             <div className="flex flex-col gap-5">
               <p
                 className={cn(
@@ -63,14 +116,18 @@ export function SignUp() {
                 placeholder="Seu nome completo"
                 iconLeft={UserIcon}
                 labelText="Nome"
-                isFilled={false}
+                isFilled={isNameFilled}
+                {...register('name')}
+                {...(errors.name && { errorMessage: errors.name.message })}
               />
               <Input
                 id="phone"
                 placeholder="(00) 00000-0000"
                 iconLeft={CallIcon}
                 labelText="Telefone"
-                isFilled={false}
+                isFilled={isPhoneFilled}
+                {...register('phone')}
+                {...(errors.phone && { errorMessage: errors.phone.message })}
               />
             </div>
             <div className="flex flex-col gap-5">
@@ -87,7 +144,9 @@ export function SignUp() {
                 placeholder="Seu e-mail de acesso"
                 iconLeft={Mail02Icon}
                 labelText="E-mail"
-                isFilled={false}
+                isFilled={isEmailFilled}
+                {...register('email')}
+                {...(errors.email && { errorMessage: errors.email.message })}
               />
               <Input
                 id="password"
@@ -96,8 +155,12 @@ export function SignUp() {
                 iconLeft={AccessIcon}
                 iconRight={showPassword ? ViewOffIcon : ViewIcon}
                 labelText="Senha"
-                isFilled={false}
                 onClickIconRight={togglePasswordVisibility}
+                isFilled={isPasswordFilled}
+                {...register('password')}
+                {...(errors.password && {
+                  errorMessage: errors.password.message,
+                })}
               />
               <Input
                 id="confirmPassword"
@@ -106,15 +169,19 @@ export function SignUp() {
                 iconLeft={AccessIcon}
                 iconRight={showConfirmPassword ? ViewOffIcon : ViewIcon}
                 labelText="Confirmar Senha"
-                isFilled={false}
                 onClickIconRight={toggleConfirmPasswordVisibility}
+                isFilled={isConfirmPasswordFilled}
+                {...register('confirmPassword')}
+                {...(errors.confirmPassword && {
+                  errorMessage: errors.confirmPassword.message,
+                })}
               />
             </div>
-            <Button>
+            <Button disabled={isSubmitting} type="submit">
               Cadastrar
               <ArrowRight02Icon />
             </Button>
-          </div>
+          </form>
         </div>
         <div className="flex flex-col justify-between gap-5">
           <p className={cn('text-gray-300', getTailwindClass('font-body-md'))}>
