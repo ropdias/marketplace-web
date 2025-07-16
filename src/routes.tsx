@@ -8,29 +8,34 @@ import { ProductEdit } from './pages/app/product/product-edit'
 import { Products } from './pages/app/products/products'
 import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
+import { Error } from './pages/error'
 import { NotFound } from './pages/not-found'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    Component: AppLayout,
+    errorElement: <Error />,
     children: [
-      { index: true, Component: Dashboard },
-      { path: '/products', Component: Products },
-      { path: '/product/create', Component: ProductCreate },
-      { path: '/product/:id/edit', Component: ProductEdit },
+      {
+        Component: AppLayout,
+        children: [
+          { index: true, Component: Dashboard },
+          { path: '/products', Component: Products },
+          { path: '/product/create', Component: ProductCreate },
+          { path: '/product/:id/edit', Component: ProductEdit },
+        ],
+      },
+      {
+        Component: AuthLayout,
+        children: [
+          { path: '/sign-in', Component: SignIn },
+          { path: '/sign-up', Component: SignUp },
+        ],
+      },
+      {
+        path: '*',
+        Component: NotFound,
+      },
     ],
-  },
-  {
-    path: '/',
-    Component: AuthLayout,
-    children: [
-      { path: '/sign-in', Component: SignIn },
-      { path: '/sign-up', Component: SignUp },
-    ],
-  },
-  {
-    path: '*',
-    Component: NotFound,
   },
 ])
