@@ -11,7 +11,7 @@ import {
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -46,6 +46,7 @@ type SignUpFormInputs = z.infer<typeof signUpFormSchema>
 export function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -78,6 +79,7 @@ export function SignUp() {
 
   async function handleSignUp(data: SignUpFormInputs) {
     console.log(data)
+    navigate(`/sign-in?email=${data.email}`)
   }
 
   return (

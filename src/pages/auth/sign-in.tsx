@@ -9,7 +9,7 @@ import {
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -26,6 +26,7 @@ type SignInFormInputs = z.infer<typeof signInFormSchema>
 
 export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
+  const [searchParams] = useSearchParams()
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -38,6 +39,9 @@ export function SignIn() {
     formState: { isSubmitting, errors },
   } = useForm<SignInFormInputs>({
     resolver: zodResolver(signInFormSchema),
+    defaultValues: {
+      email: searchParams.get('email') ?? '',
+    },
   })
 
   const emailValue = watch('email')
