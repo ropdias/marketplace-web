@@ -43,7 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {labelText}
           </Label>
         )}
-        <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3.5 group-focus-within:border-gray-400">
+        <div className="flex h-auto w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3 group-focus-within:border-gray-400">
           {IconLeft && (
             <IconLeft
               size={24}
@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <input
             type={type}
             className={cn(
-              'flex w-full bg-transparent py-0.5 text-gray-400 caret-orange-base outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50',
+              'flex w-full bg-transparent text-gray-400 caret-orange-base outline-none file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50',
               getTailwindClass('font-body-md'),
               className,
             )}
