@@ -67,11 +67,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {IconRight && (
-            <IconRight
-              size={24}
-              className="flex-shrink-0 text-gray-300"
+            <button
               onClick={onClickIconRight}
-            />
+              type="button"
+              aria-label="Mostrar ou ocultar senha"
+            >
+              <IconRight
+                size={24}
+                className="pointer-events-none flex-shrink-0 text-gray-300"
+              />
+            </button>
           )}
         </div>
         {errorMessage && (
