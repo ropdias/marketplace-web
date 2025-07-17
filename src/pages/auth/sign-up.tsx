@@ -36,6 +36,15 @@ const signUpFormSchema = z
     confirmPassword: z
       .string()
       .min(6, 'A senha deve ter no mínimo 6 caracteres'),
+    profilePicture: z
+      .instanceof(File)
+      .refine((file) => file.type.startsWith('image/'), {
+        message: 'O arquivo precisa ser uma imagem',
+      })
+      .refine((file) => file.size < 5 * 1024 * 1024, {
+        message: 'A imagem deve ter menos de 5MB',
+      })
+      .optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'As senhas não coincidem',
@@ -114,7 +123,19 @@ export function SignUp() {
               >
                 Perfil
               </p>
-              <ProfileImageUploader />
+              <Controller
+                control={control}
+                name="profilePicture"
+                render={({ field }) => (
+                  <ProfileImageUploader
+                    onChange={field.onChange}
+                    id="profilePicture"
+                    {...(errors.profilePicture && {
+                      errorMessage: errors.profilePicture.message,
+                    })}
+                  />
+                )}
+              />
               <Input
                 id="name"
                 placeholder="Seu nome completo"
