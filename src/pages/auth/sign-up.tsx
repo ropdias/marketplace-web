@@ -10,7 +10,7 @@ import {
 } from 'hugeicons-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { z } from 'zod'
 
@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+import { phoneApplyMask } from '@/utils/phone-apply-mask'
 
 import { ProfileImageUploader } from './profile-image-uploader'
 
@@ -26,10 +27,10 @@ const signUpFormSchema = z
     name: z.string().min(3, 'O nome deve ter no mínimo 3 caracteres'),
     phone: z
       .string()
-      .regex(
-        /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/,
-        'Telefone inválido, use o formato (XX) XXXXX-XXXX',
-      ),
+      .transform((val) => val.replace(/\D/g, ''))
+      .refine((val) => /^\d{10,11}$/.test(val), {
+        message: 'Telefone inválido, insira DDD e número corretamente',
+      }),
     email: z.string().email('E-mail inválido'),
     password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
     confirmPassword: z
@@ -57,6 +58,7 @@ export function SignUp() {
   }
 
   const {
+    control,
     register,
     handleSubmit,
     watch,
@@ -122,14 +124,29 @@ export function SignUp() {
                 {...register('name')}
                 {...(errors.name && { errorMessage: errors.name.message })}
               />
-              <Input
-                id="phone"
-                placeholder="(00) 00000-0000"
-                iconLeft={CallIcon}
-                labelText="Telefone"
-                isFilled={isPhoneFilled}
-                {...register('phone')}
-                {...(errors.phone && { errorMessage: errors.phone.message })}
+              <Controller
+                control={control}
+                name="phone"
+                render={({ field }) => {
+                  return (
+                    <Input
+                      {...field}
+                      inputMode="numeric"
+                      id="phone"
+                      placeholder="(00) 00000-0000"
+                      iconLeft={CallIcon}
+                      labelText="Telefone"
+                      isFilled={isPhoneFilled}
+                      {...(errors.phone && {
+                        errorMessage: errors.phone.message,
+                      })}
+                      value={field.value || ''}
+                      onChange={(e) => {
+                        field.onChange(phoneApplyMask(e.target.value))
+                      }}
+                    />
+                  )
+                }}
               />
             </div>
             <div className="flex flex-col gap-5">
