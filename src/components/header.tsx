@@ -7,7 +7,7 @@ import { UserMenu } from './user-menu'
 
 export function Header() {
   return (
-    <div className="flex h-20 w-full items-center justify-between border-b border-shape px-5">
+    <div className="flex h-20 w-full items-center justify-between border-b border-shape">
       <img src="/logo.svg" alt="Logo" className="h-10 w-14" />
       <nav className="flex items-center gap-2">
         <MenuLink to="/">
