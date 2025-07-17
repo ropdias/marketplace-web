@@ -217,15 +217,18 @@ export function SignUp() {
                 })}
               />
             </div>
-            <Button disabled={isSubmitting} type="submit">
+            <Button
+              disabled={isSubmitting}
+              type="submit"
+              className="justify-center"
+            >
               Cadastrar
-              <ArrowRight02Icon />
             </Button>
           </form>
         </div>
         <div className="flex flex-col justify-between gap-5">
           <p className={cn('text-gray-300', getTailwindClass('font-body-md'))}>
-            Já tem uma conta
+            Já tem uma conta?
           </p>
           <Button asChild variant="outline">
             <Link to="/sign-in">
