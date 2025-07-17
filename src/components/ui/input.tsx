@@ -43,7 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {labelText}
           </Label>
         )}
-        <div className="flex h-auto w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3 group-focus-within:border-gray-400">
+        <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3 group-focus-within:border-gray-400">
           {IconLeft && (
             <IconLeft
               size={24}
