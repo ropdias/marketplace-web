@@ -90,7 +90,19 @@ export function ProductCreate() {
       </div>
       <div className="flex-start flex gap-6">
         <div className="flex-shrink-0">
-          <ProductImageUploader />
+          <Controller
+            control={control}
+            name="productImage"
+            render={({ field }) => (
+              <ProductImageUploader
+                onChange={field.onChange}
+                id="productImage"
+                {...(errors.productImage && {
+                  errorMessage: errors.productImage.message,
+                })}
+              />
+            )}
+          />
         </div>
         <div className="flex w-full flex-col gap-8 rounded-[20px] bg-white p-8">
           <p className={cn('text-gray-300', getTailwindClass('font-title-sm'))}>
