@@ -45,7 +45,8 @@ export function ProductCreate() {
                     id="value"
                     placeholder="0,00"
                     labelText="Valor"
-                    isFilled={false}
+                    isFilled={true}
+                    iconLeft="R$"
                   />
                 </div>
               </div>
