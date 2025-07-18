@@ -42,12 +42,12 @@ const createProductFormSchema = z.object({
     .refine(
       (val) =>
         [
-          'Brinquedo',
-          'Móvel',
-          'Papelaria',
-          'Saúde & Beleza',
-          'Utensílio',
-          'Vestuário',
+          'toy',
+          'furniture',
+          'stationery',
+          'healthAndBeauty',
+          'utensil',
+          'clothing',
         ].includes(val),
       {
         message: 'Selecione uma opção válida',
@@ -150,25 +150,35 @@ export function ProductCreate() {
                   errorMessage: errors.description.message,
                 })}
               />
-              <Select value={selectedValue} onValueChange={setSelectedValue}>
-                <SelectTrigger
-                  onClear={clearSelection}
-                  selectedValue={selectedValue}
-                  labelText="Categoria"
-                >
-                  <SelectValue placeholder="Selecione" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="toy">Brinquedo</SelectItem>
-                  <SelectItem value="furniture">Móvel</SelectItem>
-                  <SelectItem value="stationery">Papelaria</SelectItem>
-                  <SelectItem value="healthAndBeauty">
-                    Saúde & Beleza
-                  </SelectItem>
-                  <SelectItem value="utensil">Utensílio</SelectItem>
-                  <SelectItem value="clothing">Vestuário</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="category"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger
+                      onClear={() => field.onChange('')}
+                      selectedValue={field.value}
+                      labelText="Categoria"
+                      {...(errors.category && {
+                        errorMessage: errors.category.message,
+                      })}
+                    >
+                      <SelectValue placeholder="Selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="toy">Brinquedo</SelectItem>
+                      <SelectItem value="furniture">Móvel</SelectItem>
+                      <SelectItem value="stationery">Papelaria</SelectItem>
+                      <SelectItem value="healthAndBeauty">
+                        Saúde & Beleza
+                      </SelectItem>
+                      <SelectItem value="utensil">Utensílio</SelectItem>
+                      <SelectItem value="clothing">Vestuário</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
             <div className="flex gap-3">
               <Button
