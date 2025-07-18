@@ -1,5 +1,6 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
 import {
+  AlertCircleIcon,
   ArrowDown01Icon,
   ArrowUp01Icon,
   Cancel01Icon,
@@ -17,6 +18,7 @@ interface SelectTriggerProps
   iconLeft?: React.ElementType
   onClear?: () => void
   selectedValue: string
+  errorMessage?: string
 }
 
 const Select = SelectPrimitive.Root
@@ -37,6 +39,7 @@ const SelectTrigger = React.forwardRef<
       iconLeft: IconLeft,
       onClear,
       selectedValue,
+      errorMessage,
       ...props
     },
     ref,
@@ -84,6 +87,19 @@ const SelectTrigger = React.forwardRef<
               </div>
             </SelectPrimitive.Icon>
           </div>
+          {errorMessage && (
+            <div className="flex h-7 items-center gap-1 py-1.5">
+              <AlertCircleIcon
+                size={16}
+                className="flex-shrink-0 text-danger"
+              />
+              <span
+                className={cn('text-danger', getTailwindClass('font-body-xs'))}
+              >
+                {errorMessage}
+              </span>
+            </div>
+          )}
         </SelectPrimitive.Trigger>
         {selectedValue && (
           <button
