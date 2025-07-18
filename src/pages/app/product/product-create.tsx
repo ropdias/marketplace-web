@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
@@ -6,6 +7,13 @@ import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -50,6 +58,12 @@ const createProductFormSchema = z.object({
 type CreateProductFormInputs = z.infer<typeof createProductFormSchema>
 
 export function ProductCreate() {
+  const [selectedValue, setSelectedValue] = useState<string>('')
+
+  const clearSelection = () => {
+    setSelectedValue('')
+  }
+
   const {
     control,
     register,
@@ -136,7 +150,25 @@ export function ProductCreate() {
                   errorMessage: errors.description.message,
                 })}
               />
-              <div>Categoria aqui</div>
+              <Select value={selectedValue} onValueChange={setSelectedValue}>
+                <SelectTrigger
+                  onClear={clearSelection}
+                  selectedValue={selectedValue}
+                  labelText="Categoria"
+                >
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="toy">Brinquedo</SelectItem>
+                  <SelectItem value="furniture">Móvel</SelectItem>
+                  <SelectItem value="stationery">Papelaria</SelectItem>
+                  <SelectItem value="healthAndBeauty">
+                    Saúde & Beleza
+                  </SelectItem>
+                  <SelectItem value="utensil">Utensílio</SelectItem>
+                  <SelectItem value="clothing">Vestuário</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex gap-3">
               <Button
