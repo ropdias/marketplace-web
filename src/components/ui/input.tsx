@@ -11,7 +11,7 @@ interface InputProps extends React.ComponentProps<'input'> {
   iconLeft?: React.ElementType | string
   iconRight?: React.ElementType
   onClickIconRight?: () => void
-  isFilled: boolean
+  isFilled?: boolean
   errorMessage?: string
 }
 
