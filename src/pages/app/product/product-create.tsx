@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
@@ -58,12 +57,6 @@ const createProductFormSchema = z.object({
 type CreateProductFormInputs = z.infer<typeof createProductFormSchema>
 
 export function ProductCreate() {
-  const [selectedValue, setSelectedValue] = useState<string>('')
-
-  const clearSelection = () => {
-    setSelectedValue('')
-  }
-
   const {
     control,
     register,
