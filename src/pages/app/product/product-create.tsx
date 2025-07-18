@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -48,11 +49,10 @@ export function ProductCreate() {
                   />
                 </div>
               </div>
-              <Input
+              <Textarea
                 id="description"
                 placeholder="Escreva detalhes sobre o produto, tamanho, características"
                 labelText="Descrição"
-                isFilled={false}
               />
               <div>Categoria aqui</div>
             </div>
