@@ -148,6 +148,7 @@ export function SignUp() {
               <Controller
                 control={control}
                 name="phone"
+                defaultValue=""
                 render={({ field }) => {
                   return (
                     <Input
