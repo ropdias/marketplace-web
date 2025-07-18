@@ -57,7 +57,7 @@ const SelectTrigger = React.forwardRef<
           {labelText && (
             <div
               className={cn(
-                'flex w-full items-start text-gray-300 group-data-[state=open]:text-orange-base',
+                'flex w-full items-start text-gray-300 group-focus-visible:text-orange-base group-data-[state=open]:text-orange-base',
                 getTailwindClass('font-label-md'),
               )}
             >
@@ -106,7 +106,7 @@ const SelectTrigger = React.forwardRef<
             onClick={() => {
               if (onClear) onClear()
             }}
-            className="absolute bottom-3 right-[2.125rem] z-40 block h-6 w-6 rounded-full bg-shape p-1 text-gray-300"
+            className="absolute bottom-3 right-[2.125rem] z-40 block h-6 w-6 rounded-full bg-shape p-1 text-gray-300 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2"
           >
             <Cancel01Icon className="h-4 w-4" />
           </button>
