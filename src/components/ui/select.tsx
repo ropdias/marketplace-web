@@ -187,7 +187,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'flex w-full cursor-default select-none items-center justify-between gap-2 p-4 text-gray-300 outline-none focus:text-orange-dark data-[disabled]:pointer-events-none data-[state=checked]:text-orange-base data-[disabled]:opacity-50',
+      'flex w-full cursor-pointer select-none items-center justify-between gap-2 p-4 text-gray-300 outline-none focus:text-orange-dark data-[disabled]:pointer-events-none data-[state=checked]:text-orange-base data-[disabled]:opacity-50',
       getTailwindClass('font-body-sm'),
       className,
     )}
