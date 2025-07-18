@@ -54,7 +54,7 @@ const SelectTrigger = React.forwardRef<
           {labelText && (
             <div
               className={cn(
-                'flex w-full items-start text-gray-300 group-data-[state=open]:text-red-500',
+                'flex w-full items-start text-gray-300 group-data-[state=open]:text-orange-base',
                 getTailwindClass('font-label-md'),
               )}
             >
