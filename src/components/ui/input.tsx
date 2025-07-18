@@ -8,7 +8,7 @@ import { Label } from './label'
 
 interface InputProps extends React.ComponentProps<'input'> {
   labelText?: string
-  iconLeft?: React.ElementType
+  iconLeft?: React.ElementType | string
   iconRight?: React.ElementType
   onClickIconRight?: () => void
   isFilled: boolean
@@ -44,18 +44,32 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </Label>
         )}
         <div className="flex h-12 w-full items-center gap-2 border-b border-gray-100 px-0.5 py-3 group-focus-within:border-gray-400">
-          {IconLeft && (
-            <IconLeft
-              size={24}
-              className={cn(
-                'flex-shrink-0',
-                isFilled ? 'text-orange-base' : 'text-gray-200',
-                errorMessage
-                  ? 'text-danger'
-                  : 'group-focus-within:text-orange-base',
-              )}
-            />
-          )}
+          {IconLeft &&
+            (typeof IconLeft === 'string' ? (
+              <span
+                className={cn(
+                  'flex-shrink-0 text-base',
+                  getTailwindClass('font-body-md'),
+                  isFilled ? 'text-orange-base' : 'text-gray-400',
+                  errorMessage
+                    ? 'text-danger'
+                    : 'group-focus-within:text-orange-base',
+                )}
+              >
+                {IconLeft}
+              </span>
+            ) : (
+              <IconLeft
+                size={24}
+                className={cn(
+                  'flex-shrink-0',
+                  isFilled ? 'text-orange-base' : 'text-gray-200',
+                  errorMessage
+                    ? 'text-danger'
+                    : 'group-focus-within:text-orange-base',
+                )}
+              />
+            ))}
           <input
             type={type}
             className={cn(
