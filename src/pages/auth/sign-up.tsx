@@ -77,13 +77,11 @@ export function SignUp() {
   })
 
   const nameValue = watch('name')
-  const phoneValue = watch('phone')
   const emailValue = watch('email')
   const passwordValue = watch('password')
   const confirmPasswordValue = watch('confirmPassword')
 
   const isNameFilled = !!nameValue
-  const isPhoneFilled = !!phoneValue
   const isEmailFilled = !!emailValue
   const isPasswordFilled = !!passwordValue
   const isConfirmPasswordFilled = !!confirmPasswordValue
@@ -158,7 +156,7 @@ export function SignUp() {
                       placeholder="(00) 00000-0000"
                       iconLeft={CallIcon}
                       labelText="Telefone"
-                      isFilled={isPhoneFilled}
+                      isFilled={!!field.value}
                       {...(errors.phone && {
                         errorMessage: errors.phone.message,
                       })}
