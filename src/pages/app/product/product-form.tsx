@@ -19,6 +19,7 @@ import { Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { ProductImageUploader } from './product-image-uploader'
+import { TagStatus } from "@/components/tag-status"
 
 const productFormSchema = z.object({
   productImage: z
@@ -114,9 +115,14 @@ export function ProductForm({
         />
       </div>
       <div className="flex w-full flex-col gap-8 rounded-[20px] bg-white p-8">
-        <p className={cn('text-gray-300', getTailwindClass('font-title-sm'))}>
-          Dados do produto
-        </p>
+        <div className="flex items-center justify-between">
+          <p className={cn('text-gray-300', getTailwindClass('font-title-sm'))}>
+            Dados do produto
+          </p>
+          {action === 'edit' && initialData && (
+            <TagStatus status={initialData.status} />
+          )}
+        </div>
         <form
           className="flex flex-col gap-10"
           onSubmit={handleSubmit(handleProductFormSubmit)}
