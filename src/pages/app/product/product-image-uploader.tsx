@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
-type ProductImageUploaderProps = {
+interface ProductImageUploaderProps {
   onChange?: (file: File | null) => void
   errorMessage?: string
   id: string
