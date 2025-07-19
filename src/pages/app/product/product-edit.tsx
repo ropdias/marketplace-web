@@ -22,7 +22,17 @@ export function ProductEdit() {
           Gerencie as informações do produto cadastrado
         </p>
       </div>
-      <ProductForm handleProductFormSubmit={handleProductFormSubmit} />
+      <ProductForm
+        handleProductFormSubmit={handleProductFormSubmit}
+        action="edit"
+        initialData={{
+          title: 'Sofá',
+          price: '1200,90',
+          description:
+            'Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em metal cromado.',
+          category: 'furniture',
+        }}
+      />
     </>
   )
 }

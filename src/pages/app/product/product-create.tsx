@@ -22,7 +22,10 @@ export function ProductCreate() {
           Cadastre um produto para venda no marketplace
         </p>
       </div>
-      <ProductForm handleProductFormSubmit={handleProductFormSubmit} />
+      <ProductForm
+        handleProductFormSubmit={handleProductFormSubmit}
+        action="create"
+      />
     </>
   )
 }

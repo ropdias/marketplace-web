@@ -56,9 +56,15 @@ export type productFormInputs = z.infer<typeof productFormSchema>
 
 interface ProductFormProps {
   handleProductFormSubmit: (data: productFormInputs) => Promise<void>
+  action: 'create' | 'edit'
+  initialData?: productFormInputs
 }
 
-export function ProductForm({ handleProductFormSubmit }: ProductFormProps) {
+export function ProductForm({
+  handleProductFormSubmit,
+  action,
+  initialData,
+}: ProductFormProps) {
   const {
     control,
     register,
@@ -66,6 +72,13 @@ export function ProductForm({ handleProductFormSubmit }: ProductFormProps) {
     formState: { isSubmitting, errors },
   } = useForm<productFormInputs>({
     resolver: zodResolver(productFormSchema),
+    defaultValues: initialData || {
+      title: '',
+      price: '',
+      description: '',
+      category: '',
+      productImage: undefined,
+    },
   })
 
   return (
@@ -186,7 +199,7 @@ export function ProductForm({ handleProductFormSubmit }: ProductFormProps) {
               type="submit"
               disabled={isSubmitting}
             >
-              Salvar e publicar
+              {action === 'edit' ? 'Salvar e atualizar' : 'Salvar e publicar'}
             </Button>
           </div>
         </form>
