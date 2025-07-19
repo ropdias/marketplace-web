@@ -2,8 +2,15 @@ import { Helmet } from 'react-helmet-async'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+import { parseCurrency } from '@/utils/parse-currency'
+
+import { ProductForm, productFormInputs } from './product-form'
 
 export function ProductEdit() {
+  async function handleProductFormSubmit(data: productFormInputs) {
+    const parsedPrice = parseCurrency(data.price)
+  }
+
   return (
     <>
       <Helmet title="Cadastro de Produto" />
@@ -15,7 +22,7 @@ export function ProductEdit() {
           Gerencie as informações do produto cadastrado
         </p>
       </div>
-      <div className="flex-start flex gap-6"></div>
+      <ProductForm handleProductFormSubmit={handleProductFormSubmit} />
     </>
   )
 }
