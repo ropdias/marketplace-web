@@ -26,11 +26,13 @@ export function ProductEdit() {
         handleProductFormSubmit={handleProductFormSubmit}
         action="edit"
         initialData={{
+          id: '1',
           title: 'Sofá',
           price: '1200,90',
           description:
             'Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em metal cromado.',
           category: 'furniture',
+          status: 'anunciado',
         }}
       />
     </>
