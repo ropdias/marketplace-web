@@ -4,7 +4,8 @@ import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { parseCurrency } from '@/utils/parse-currency'
 
-import { ProductForm, productFormInputs } from './product-form'
+import { ProductForm } from './product-form'
+import { productFormInputs } from './product-form.schema'
 
 export function ProductCreate() {
   async function handleProductFormSubmit(data: productFormInputs) {
