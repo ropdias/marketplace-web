@@ -15,6 +15,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+import { Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { ProductImageUploader } from './product-image-uploader'
@@ -54,10 +55,30 @@ const productFormSchema = z.object({
 
 export type productFormInputs = z.infer<typeof productFormSchema>
 
+function getProductFormDefaultValues(product?: Product): productFormInputs {
+  if (!product) {
+    return {
+      title: '',
+      price: '',
+      description: '',
+      category: '',
+      productImage: undefined,
+    }
+  }
+
+  return {
+    title: product.title,
+    price: product.price,
+    description: product.description,
+    category: product.category,
+    productImage: undefined,
+  }
+}
+
 interface ProductFormProps {
   handleProductFormSubmit: (data: productFormInputs) => Promise<void>
   action: 'create' | 'edit'
-  initialData?: productFormInputs
+  initialData?: Product
 }
 
 export function ProductForm({
@@ -72,13 +93,7 @@ export function ProductForm({
     formState: { isSubmitting, errors },
   } = useForm<productFormInputs>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: initialData || {
-      title: '',
-      price: '',
-      description: '',
-      category: '',
-      productImage: undefined,
-    },
+    defaultValues: getProductFormDefaultValues(initialData),
   })
 
   return (
