@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { z } from 'zod'
 
+import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -19,7 +20,6 @@ import { Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { ProductImageUploader } from './product-image-uploader'
-import { TagStatus } from "@/components/tag-status"
 
 const productFormSchema = z.object({
   productImage: z
