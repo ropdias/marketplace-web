@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 const badgeVariants = cva(
   cn(
     getTailwindClass('font-label-sm'),
-    'inline-flex items-center rounded-full text-white leading-none h-5 px-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    'inline-flex items-center justify-center rounded-full text-white h-auto py-1 px-2 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   ),
   {
     variants: {
