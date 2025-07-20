@@ -1,4 +1,5 @@
 import { Product } from '@/types/product'
+import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { productFormInputs } from './product-form.schema'
 
@@ -8,18 +9,18 @@ export function getProductFormDefaultValues(
   if (!product) {
     return {
       title: '',
-      price: '',
+      categoryId: '',
       description: '',
-      category: '',
-      productImage: undefined,
+      priceInCents: '',
+      image: undefined,
     }
   }
 
   return {
     title: product.title,
-    price: product.price,
+    priceInCents: currencyApplyMask(String(product.priceInCents)),
     description: product.description,
-    category: product.category,
-    productImage: undefined,
+    categoryId: product.category.id,
+    image: undefined,
   }
 }
