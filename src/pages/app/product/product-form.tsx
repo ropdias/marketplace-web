@@ -15,7 +15,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { Product } from '@/types/product'
+import { mockCategories, Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { productFormInputs, productFormSchema } from './product-form.schema'
@@ -48,13 +48,13 @@ export function ProductForm({
       <div className="flex-shrink-0">
         <Controller
           control={control}
-          name="productImage"
+          name="image"
           render={({ field }) => (
             <ProductImageUploader
               onChange={field.onChange}
-              id="productImage"
-              {...(errors.productImage && {
-                errorMessage: errors.productImage.message,
+              id="image"
+              {...(errors.image && {
+                errorMessage: errors.image.message,
               })}
             />
           )}
@@ -89,20 +89,20 @@ export function ProductForm({
               <div className="w-[12.5rem] flex-shrink-0">
                 <Controller
                   control={control}
-                  name="price"
+                  name="priceInCents"
                   defaultValue=""
                   render={({ field }) => {
                     return (
                       <Input
                         {...field}
                         inputMode="numeric"
-                        id="price"
+                        id="priceInCents"
                         placeholder="0,00"
                         labelText="Valor"
                         iconLeft="R$"
                         isFilled={!!field.value}
-                        {...(errors.price && {
-                          errorMessage: errors.price.message,
+                        {...(errors.priceInCents && {
+                          errorMessage: errors.priceInCents.message,
                         })}
                         value={field.value || ''}
                         onChange={(e) =>
@@ -124,7 +124,7 @@ export function ProductForm({
               })}
             />
             <Controller
-              name="category"
+              name="categoryId"
               control={control}
               defaultValue=""
               render={({ field }) => (
@@ -133,21 +133,18 @@ export function ProductForm({
                     onClear={() => field.onChange('')}
                     selectedValue={field.value}
                     labelText="Categoria"
-                    {...(errors.category && {
-                      errorMessage: errors.category.message,
+                    {...(errors.categoryId && {
+                      errorMessage: errors.categoryId.message,
                     })}
                   >
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="toy">Brinquedo</SelectItem>
-                    <SelectItem value="furniture">Móvel</SelectItem>
-                    <SelectItem value="stationery">Papelaria</SelectItem>
-                    <SelectItem value="healthAndBeauty">
-                      Saúde & Beleza
-                    </SelectItem>
-                    <SelectItem value="utensil">Utensílio</SelectItem>
-                    <SelectItem value="clothing">Vestuário</SelectItem>
+                    {mockCategories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               )}
