@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
+import { mockProducts } from '@/types/product'
 import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
 import { ProductForm } from './product-form'
@@ -26,15 +27,7 @@ export function ProductEdit() {
       <ProductForm
         handleProductFormSubmit={handleProductFormSubmit}
         action="edit"
-        initialData={{
-          id: '1',
-          title: 'Sofá',
-          price: '1200,90',
-          description:
-            'Sofá revestido em couro legítimo, com estrutura em madeira maciça e pés em metal cromado.',
-          category: 'furniture',
-          status: 'anunciado',
-        }}
+        initialData={mockProducts[0]}
       />
     </>
   )
