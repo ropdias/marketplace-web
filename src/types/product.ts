@@ -74,3 +74,7 @@ export interface EditProductResponse {
 export interface ChangeProductStatusResponse {
   product: Product
 }
+
+export interface GetCategoriesResponse {
+  categories: Category[]
+}
