@@ -8,7 +8,7 @@ import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 import { ProductForm } from './product-form'
 import { productFormInputs } from './product-form.schema'
 
-export function ProductEdit() {
+export function EditProduct() {
   async function handleProductFormSubmit(data: productFormInputs) {
     const priceInCents = unmaskCurrencyToCents(data.priceInCents)
   }
