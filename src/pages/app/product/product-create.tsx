@@ -9,7 +9,7 @@ import { productFormInputs } from './product-form.schema'
 
 export function ProductCreate() {
   async function handleProductFormSubmit(data: productFormInputs) {
-    const priceInCents = unmaskCurrencyToCents(data.price)
+    const priceInCents = unmaskCurrencyToCents(data.priceInCents)
   }
 
   return (
