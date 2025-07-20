@@ -13,11 +13,9 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: 'bg-gray-400',
-      },
-      status: {
-        anunciado: 'bg-blue-dark',
-        vendido: 'bg-success',
-        desativado: 'bg-gray-300',
+        available: 'bg-blue-dark',
+        sold: 'bg-success',
+        cancelled: 'bg-gray-300',
       },
     },
     defaultVariants: {
@@ -26,16 +24,17 @@ const badgeVariants = cva(
   },
 )
 
+export type BadgeColorVariants = NonNullable<
+  VariantProps<typeof badgeVariants>['variant']
+>
+
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, status, ...props }: BadgeProps) {
+function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div
-      className={cn(badgeVariants({ variant, status }), className)}
-      {...props}
-    />
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
   )
 }
 
