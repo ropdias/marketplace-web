@@ -2,14 +2,14 @@ import { Helmet } from 'react-helmet-async'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { parseCurrency } from '@/utils/parse-currency'
+import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
 import { ProductForm } from './product-form'
 import { productFormInputs } from './product-form.schema'
 
 export function ProductCreate() {
   async function handleProductFormSubmit(data: productFormInputs) {
-    const parsedPrice = parseCurrency(data.price)
+    const priceInCents = unmaskCurrencyToCents(data.price)
   }
 
   return (
