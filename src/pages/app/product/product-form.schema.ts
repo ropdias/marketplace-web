@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const productFormSchema = z.object({
-  productImage: z
+  image: z
     .instanceof(File)
     .refine((file) => file.type.startsWith('image/'), {
       message: 'O arquivo precisa ser uma imagem',
@@ -11,26 +11,11 @@ export const productFormSchema = z.object({
     })
     .optional(),
   title: z.string().min(3, 'O título deve ter no mínimo 3 caracteres'),
-  price: z.string().refine((val) => val.trim() !== '', {
+  priceInCents: z.string().refine((val) => val.trim() !== '', {
     message: 'Informe um valor',
   }),
   description: z.string().min(3, 'A descrição deve ter no mínimo 3 caracteres'),
-  category: z
-    .string()
-    .refine(
-      (val) =>
-        [
-          'toy',
-          'furniture',
-          'stationery',
-          'healthAndBeauty',
-          'utensil',
-          'clothing',
-        ].includes(val),
-      {
-        message: 'Selecione uma opção válida',
-      },
-    ),
+  categoryId: z.string().uuid({ message: 'Categoria inválida' }),
 })
 
 export type productFormInputs = z.infer<typeof productFormSchema>
