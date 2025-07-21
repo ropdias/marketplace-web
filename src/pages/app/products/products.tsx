@@ -28,6 +28,7 @@ export function Products() {
     <>
       <Helmet title="Produtos" />
       <div className="flex flex-col gap-2">
+        <div className="h-6"></div>
         <p className={cn('text-gray-500', getTailwindClass('font-title-md'))}>
           Seus Produtos
         </p>
