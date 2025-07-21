@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async'
+import { useParams } from 'react-router'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -9,6 +10,10 @@ import { ProductForm } from './product-form'
 import { productFormInputs } from './product-form.schema'
 
 export function EditProduct() {
+  const { id } = useParams()
+
+  const product = mockProducts.find((product) => product.id === id)
+
   async function handleProductFormSubmit(data: productFormInputs) {
     const priceInCents = unmaskCurrencyToCents(data.priceInCents)
   }
@@ -27,7 +32,7 @@ export function EditProduct() {
       <ProductForm
         handleProductFormSubmit={handleProductFormSubmit}
         action="edit"
-        initialData={mockProducts[0]}
+        initialData={product}
       />
     </>
   )
