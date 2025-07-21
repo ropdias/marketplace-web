@@ -58,7 +58,7 @@ export function ProfileImageUploader({
                 <img
                   src={image}
                   alt="Imagem Carregada"
-                  className="h-full w-full rounded-[12px] object-cover"
+                  className="h-full w-full rounded-[12px] object-contain"
                 />
                 <div className="absolute inset-0 rounded-[12px] bg-black opacity-0 group-hover:opacity-60" />
                 <ImageUploadIcon
