@@ -10,14 +10,16 @@ interface ProductImageUploaderProps {
   onChange?: (file: File | null) => void
   errorMessage?: string
   id: string
+  defaultImageUrl?: string
 }
 
 export function ProductImageUploader({
   onChange,
   errorMessage,
   id,
+  defaultImageUrl,
 }: ProductImageUploaderProps) {
-  const [image, setImage] = useState<string | null>(null)
+  const [image, setImage] = useState<string | null>(defaultImageUrl ?? null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] ?? null
@@ -69,7 +71,7 @@ export function ProductImageUploader({
                 <img
                   src={image}
                   alt="Imagem Carregada"
-                  className="h-full w-full rounded-[20px] object-cover"
+                  className="h-full w-full rounded-[20px] object-contain"
                 />
                 <div className="absolute inset-0 rounded-[20px] bg-black opacity-0 group-hover:opacity-60" />
                 <div className="absolute left-1/2 top-1/2 flex w-[9.9375rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 overflow-hidden opacity-0 transition duration-100 group-hover:opacity-100">

@@ -53,6 +53,7 @@ export function ProductForm({
             <ProductImageUploader
               onChange={field.onChange}
               id="image"
+              defaultImageUrl={initialData?.attachments?.[0]?.url}
               {...(errors.image && {
                 errorMessage: errors.image.message,
               })}
