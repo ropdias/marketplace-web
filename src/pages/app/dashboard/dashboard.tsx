@@ -11,6 +11,7 @@ export function Dashboard() {
     <>
       <Helmet title="Dashboard" />
       <div className="flex flex-col gap-2">
+        <div className="h-6"></div>
         <p className={cn('text-gray-500', getTailwindClass('font-title-md'))}>
           Últimos 30 dias
         </p>
