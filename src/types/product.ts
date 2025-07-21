@@ -136,7 +136,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-1',
-        url: 'picture-1.png',
+        url: '/picture-1.png',
       },
     ],
   },
@@ -152,7 +152,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-2',
-        url: 'picture-2.png',
+        url: '/picture-2.png',
       },
     ],
   },
@@ -167,7 +167,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-3',
-        url: 'picture-3.png',
+        url: '/picture-3.png',
       },
     ],
   },
@@ -183,7 +183,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-4',
-        url: 'picture-4.png',
+        url: '/picture-4.png',
       },
     ],
   },
@@ -199,7 +199,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-5',
-        url: 'picture-5.png',
+        url: '/picture-5.png',
       },
     ],
   },
@@ -215,7 +215,7 @@ export const mockProducts: Product[] = [
     attachments: [
       {
         id: 'img-6',
-        url: 'picture-6.png',
+        url: '/picture-6.png',
       },
     ],
   },
