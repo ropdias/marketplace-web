@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
+import { DashboardChart } from './dashboard-chart'
 import { DashboardItem } from './dashboard-item'
 
 export function Dashboard() {
@@ -38,8 +39,20 @@ export function Dashboard() {
           count={1.238}
           label="Pessoas visitantes"
         />
-        <div className="col-start-2 col-end-3 row-start-1 row-end-4">
-          Grafico aqui
+        <div className="col-start-2 col-end-3 row-start-1 row-end-4 flex flex-col gap-7 rounded-[20px] bg-white px-6 pb-5 pt-6">
+          <div className="flex items-center justify-between">
+            <p
+              className={cn('text-gray-500', getTailwindClass('font-title-sm'))}
+            >
+              Visitantes
+            </p>
+            <p
+              className={cn('text-gray-500', getTailwindClass('font-title-sm'))}
+            >
+              Data Picker aqui
+            </p>
+          </div>
+          <DashboardChart />
         </div>
       </div>
     </>
