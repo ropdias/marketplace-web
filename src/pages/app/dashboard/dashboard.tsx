@@ -1,4 +1,11 @@
-import { SaleTag02Icon, Store04Icon, UserMultipleIcon } from 'hugeicons-react'
+import { format, parseISO } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import {
+  Calendar04Icon,
+  SaleTag02Icon,
+  Store04Icon,
+  UserMultipleIcon,
+} from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -8,6 +15,9 @@ import { DashboardChart } from './dashboard-chart'
 import { DashboardItem } from './dashboard-item'
 
 export function Dashboard() {
+  const startDate = parseISO('2025-06-26T15:30:00.000Z')
+  const endDate = parseISO('2025-07-25T15:30:00.000Z')
+
   return (
     <>
       <Helmet title="Dashboard" />
@@ -46,11 +56,17 @@ export function Dashboard() {
             >
               Visitantes
             </p>
-            <p
-              className={cn('text-gray-500', getTailwindClass('font-title-sm'))}
-            >
-              Data Picker aqui
-            </p>
+            <div className="flex items-center gap-2">
+              <Calendar04Icon size={16} className="text-blue-dark" />
+              <p
+                className={cn(
+                  'text-gray-300',
+                  getTailwindClass('font-label-sm'),
+                )}
+              >
+                {`${format(startDate, "dd 'de' MMMM", { locale: ptBR })} - ${format(endDate, "dd 'de' MMMM", { locale: ptBR })}`}
+              </p>
+            </div>
           </div>
           <DashboardChart />
         </div>
