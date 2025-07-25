@@ -29,8 +29,8 @@ export function UserMenu() {
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
-      queryClient.clear() // clear all queries
       navigate('/sign-in', { replace: true })
+      queryClient.clear() // clear all queries
     },
   })
 
