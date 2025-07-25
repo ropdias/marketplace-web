@@ -1,15 +1,11 @@
 import { api } from '@/lib/axios'
 import { Seller } from '@/types/seller'
 
-export interface AvatarId {
-  avatarId: string | null
-}
-
 export interface CreateSellerBody {
   name: string
   phone: string
   email: string
-  avatarId: AvatarId
+  avatarId: string | null
   password: string
   passwordConfirmation: string
 }
