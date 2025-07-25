@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Logout01Icon } from 'hugeicons-react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Logout01Icon, UserIcon } from 'hugeicons-react'
 import { useNavigate } from 'react-router'
 
 import { getSellerProfile } from '@/api/sellers/get-seller-profile'
@@ -18,6 +18,7 @@ import {
 
 export function UserMenu() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { data: profile } = useQuery({
     queryKey: ['seller-profile'],
@@ -28,30 +29,41 @@ export function UserMenu() {
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
+      queryClient.clear() // clear all queries
       navigate('/sign-in', { replace: true })
     },
   })
 
+  console.log(profile?.seller.avatar?.url)
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="h-12 w-12 rounded-[12px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2">
-        <img
-          src={profile?.seller.avatar?.url}
-          alt="User Profile"
-          className="h-12 w-12 rounded-[12px] object-cover"
-        />
+      <DropdownMenuTrigger className="flex h-12 w-12 items-center justify-center rounded-[12px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2">
+        {profile?.seller.avatar?.url ? (
+          <img
+            src={profile?.seller.avatar?.url}
+            alt="User Profile"
+            className="h-12 w-12 rounded-[12px] object-cover"
+          />
+        ) : (
+          <UserIcon size={32} className="text-orange-base" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
         sideOffset={12}
         className="flex w-[10.5rem] flex-col gap-5"
       >
-        <DropdownMenuLabel className="flex items-center justify-center gap-3 p-0">
-          <img
-            src={profile?.seller.avatar?.url}
-            alt="User Profile"
-            className="h-8 w-8 rounded-[12px] object-cover"
-          />
+        <DropdownMenuLabel className="flex items-center gap-3 p-0">
+          {profile?.seller.avatar?.url ? (
+            <img
+              src={profile?.seller.avatar?.url}
+              alt="User Profile"
+              className="h-8 w-8 rounded-[12px] object-cover"
+            />
+          ) : (
+            <UserIcon size={28} className="text-orange-base" />
+          )}
           <span
             className={cn(
               'line-clamp-2 max-w-[5.75rem] text-gray-300',
