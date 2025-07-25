@@ -34,8 +34,6 @@ export function UserMenu() {
     },
   })
 
-  console.log(profile?.seller.avatar?.url)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex h-12 w-12 items-center justify-center rounded-[12px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2">
