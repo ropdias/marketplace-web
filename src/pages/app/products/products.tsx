@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -6,6 +7,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router'
 import { z } from 'zod'
 
+import { getAllProductsFromSeller } from '@/api/products/get-all-products-from-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -17,7 +19,7 @@ import {
 } from '@/components/ui/select'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { mockProducts, ProductStatus } from '@/types/product'
+import { ProductStatus } from '@/types/product'
 
 import { ProductItem } from './product-item'
 
@@ -63,6 +65,20 @@ export function Products() {
       return newParams
     })
   }
+
+  const parsedStatus = statusParamSchema.safeParse(searchParams.get('status'))
+  const status = parsedStatus.success ? parsedStatus.data : undefined
+
+  const search = searchParams.get('search') ?? undefined
+
+  const { data: result } = useQuery({
+    queryKey: ['products-from-seller', status, search],
+    queryFn: () =>
+      getAllProductsFromSeller({
+        status,
+        search,
+      }),
+  })
 
   useEffect(() => {
     const parsedStatus = statusParamSchema.safeParse(searchParams.get('status'))
@@ -137,9 +153,10 @@ export function Products() {
           </form>
         </div>
         <div className="grid w-full grid-cols-2 grid-rows-3 gap-4">
-          {mockProducts.map((product) => (
-            <ProductItem key={product.id} product={product} />
-          ))}
+          {result &&
+            result.products.map((product) => (
+              <ProductItem key={product.id} product={product} />
+            ))}
         </div>
       </div>
     </>
