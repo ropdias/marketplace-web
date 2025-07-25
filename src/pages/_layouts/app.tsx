@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
 import { getSellerProfile } from '@/api/sellers/get-seller-profile'
 import { Header } from '@/components/header'
@@ -10,6 +11,7 @@ import { api } from '@/lib/axios'
 
 export function AppLayout() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { isLoading: isLoadingProfile } = useQuery({
     queryKey: ['seller-profile'],
@@ -18,6 +20,12 @@ export function AppLayout() {
   })
 
   useEffect(() => {
+    const logoutAndRedirect = (message?: string) => {
+      if (message) toast.error(message)
+      navigate('/sign-in', { replace: true })
+      queryClient.clear() // clear all queries
+    }
+
     const interceptorId = api.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -25,18 +33,18 @@ export function AppLayout() {
           const status = error.response?.status
           const message = error.response?.data.message
           if (status === 401 && message === 'Unauthorized') {
-            navigate('/sign-in', { replace: true })
-          } else {
-            throw error
+            logoutAndRedirect('Acesso não autorizado. Faça login novamente.')
+            return Promise.reject(error)
           }
         }
+        return Promise.reject(error)
       },
     )
 
     return () => {
       api.interceptors.response.eject(interceptorId)
     }
-  }, [navigate])
+  }, [navigate, queryClient])
 
   return (
     <div className="flex min-h-screen min-w-[66.875rem] flex-col gap-8 px-5 antialiased">
