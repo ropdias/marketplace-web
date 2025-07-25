@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -9,9 +10,11 @@ import {
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signIn } from '@/api/sessions/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -27,6 +30,7 @@ type SignInFormInputs = z.infer<typeof signInFormSchema>
 export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -50,7 +54,19 @@ export function SignIn() {
   const isEmailFilled = !!emailValue
   const isPasswordFilled = !!passwordValue
 
-  async function handleSignIn(data: SignInFormInputs) {}
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
+  async function handleSignIn(data: SignInFormInputs) {
+    try {
+      await authenticate({ email: data.email, password: data.password })
+      toast.success('Autenticado com sucesso!')
+      navigate('/')
+    } catch {
+      toast.error('Credenciais inválidas.')
+    }
+  }
 
   return (
     <>
