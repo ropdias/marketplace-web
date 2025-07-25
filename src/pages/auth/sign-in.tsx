@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -31,6 +31,7 @@ export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -61,6 +62,7 @@ export function SignIn() {
   async function handleSignIn(data: SignInFormInputs) {
     try {
       await authenticate({ email: data.email, password: data.password })
+      queryClient.clear() // clear all queries
       toast.success('Autenticado com sucesso!')
       navigate('/')
     } catch {
