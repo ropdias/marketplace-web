@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -12,8 +13,11 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { uploadImages } from '@/api/attachments/upload-images'
+import { createSeller } from '@/api/sellers/create-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -86,9 +90,45 @@ export function SignUp() {
   const isPasswordFilled = !!passwordValue
   const isConfirmPasswordFilled = !!confirmPasswordValue
 
+  const { mutateAsync: uploadImagesFn } = useMutation({
+    mutationFn: uploadImages,
+  })
+
+  const { mutateAsync: createSellerFn } = useMutation({
+    mutationFn: createSeller,
+  })
+
   async function handleSignUp(data: SignUpFormInputs) {
-    console.log(data)
-    navigate(`/sign-in?email=${data.email}`)
+    let avatarId: string | null = null
+
+    if (data.profilePicture) {
+      const files = new FormData()
+      files.append('files', data.profilePicture)
+
+      try {
+        const uploadImagesResponse = await uploadImagesFn({ files })
+        avatarId = uploadImagesResponse.attachments[0]?.id ?? null
+      } catch {
+        toast.error('Erro ao enviar imagem de perfil. Tente novamente.')
+        return
+      }
+    }
+
+    try {
+      await createSellerFn({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        avatarId,
+        password: data.password,
+        passwordConfirmation: data.confirmPassword,
+      })
+
+      toast.success('Cadastro realizado com sucesso!')
+      navigate(`/sign-in?email=${data.email}`)
+    } catch {
+      toast.error('Erro ao criar conta. Verifique os dados e tente novamente.')
+    }
   }
 
   return (
