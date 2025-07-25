@@ -19,7 +19,7 @@ export function ProductItem({ product }: ProductItemProps) {
       <img
         src={product.attachments[0].url}
         alt={`Imagem do ${product.title}`}
-        className="h-full w-full rounded-[16px] object-contain"
+        className="h-[9rem] w-full rounded-[16px] object-cover"
       />
       <div className="flex flex-col gap-2 px-3 pb-4 pt-3">
         <div className="flex items-center justify-between">
