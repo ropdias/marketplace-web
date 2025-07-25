@@ -2,8 +2,8 @@ import { api } from '@/lib/axios'
 import { Product, ProductStatus } from '@/types/product'
 
 export interface GetAllProductsFromSellerQuery {
-  status?: ProductStatus | null
-  search?: string | null
+  status?: ProductStatus
+  search?: string
 }
 
 export interface GetAllProductsFromSellerResponse {
