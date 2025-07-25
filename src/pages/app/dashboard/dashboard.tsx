@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import {
@@ -8,15 +9,51 @@ import {
 } from 'hugeicons-react'
 import { Helmet } from 'react-helmet-async'
 
+import { getProductsAvailableIn30Days } from '@/api/metrics/get-products-available-in-30-days'
+import { getProductsSoldIn30Days } from '@/api/metrics/get-products-sold-in-30-days'
+import { getViewsBySellerIn30Days } from '@/api/metrics/get-views-by-seller-in-30-days'
+import { getViewsPerDayBySellerIn30Days } from '@/api/metrics/get-views-per-day-by-seller-in-30-days'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
-import { DashboardChart } from './dashboard-chart'
+import { ChartPoint, DashboardChart } from './dashboard-chart'
 import { DashboardItem } from './dashboard-item'
 
 export function Dashboard() {
-  const startDate = parseISO('2025-06-26T15:30:00.000Z')
-  const endDate = parseISO('2025-07-25T15:30:00.000Z')
+  const { data: productsSoldIn30Days } = useQuery({
+    queryKey: ['products-sold-in-30-days'],
+    queryFn: getProductsSoldIn30Days,
+  })
+
+  const { data: productsAvailableIn30Days } = useQuery({
+    queryKey: ['products-available-in-30-days'],
+    queryFn: getProductsAvailableIn30Days,
+  })
+
+  const { data: viewsBySellerIn30Days } = useQuery({
+    queryKey: ['views-by-seller-in-30-days'],
+    queryFn: getViewsBySellerIn30Days,
+  })
+
+  const { data: viewsPerDayBySellerIn30Days } = useQuery({
+    queryKey: ['views-per-day-by-seller-in-30-days'],
+    queryFn: getViewsPerDayBySellerIn30Days,
+  })
+
+  let chartData: ChartPoint[] = []
+  let startDate = new Date()
+  let endDate = new Date()
+
+  const views = viewsPerDayBySellerIn30Days?.viewsPerDay ?? []
+  chartData = views
+
+  if (views?.[0]?.date) {
+    startDate = parseISO(views[0].date)
+  }
+
+  if (views?.[views.length - 1]?.date) {
+    endDate = parseISO(views[views.length - 1].date)
+  }
 
   return (
     <>
@@ -34,19 +71,19 @@ export function Dashboard() {
         <DashboardItem
           Icon={SaleTag02Icon}
           iconColor="text-blue-dark"
-          count={24}
+          count={productsSoldIn30Days?.amount ?? 0}
           label="Produtos vendidos"
         />
         <DashboardItem
           Icon={Store04Icon}
           iconColor="text-blue-dark"
-          count={56}
+          count={productsAvailableIn30Days?.amount ?? 0}
           label="Produtos anunciados"
         />
         <DashboardItem
           Icon={UserMultipleIcon}
           iconColor="text-gray-300"
-          count={1.238}
+          count={viewsBySellerIn30Days?.amount ?? 0}
           label="Pessoas visitantes"
         />
         <div className="col-start-2 col-end-3 row-start-1 row-end-4 flex flex-col gap-7 rounded-[20px] bg-white px-6 pb-5 pt-6">
@@ -64,11 +101,13 @@ export function Dashboard() {
                   getTailwindClass('font-label-sm'),
                 )}
               >
-                {`${format(startDate, "dd 'de' MMMM", { locale: ptBR })} - ${format(endDate, "dd 'de' MMMM", { locale: ptBR })}`}
+                {views?.length
+                  ? `${format(startDate, "dd 'de' MMMM", { locale: ptBR })} - ${format(endDate, "dd 'de' MMMM", { locale: ptBR })}`
+                  : 'Sem dados para o período'}
               </p>
             </div>
           </div>
-          <DashboardChart />
+          <DashboardChart chartData={chartData} />
         </div>
       </div>
     </>

@@ -12,34 +12,24 @@ import {
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
-export const description = 'A line chart'
-
-const chartData = [
-  { date: '2025-06-26T15:30:00.000Z', visitors: 186 },
-  { date: '2025-06-27T15:30:00.000Z', visitors: 305 },
-  { date: '2025-06-28T15:30:00.000Z', visitors: 237 },
-  { date: '2025-06-29T15:30:00.000Z', visitors: 73 },
-  { date: '2025-06-30T15:30:00.000Z', visitors: 209 },
-  { date: '2025-07-01T15:30:00.000Z', visitors: 500 },
-  { date: '2025-07-02T15:30:00.000Z', visitors: 382 },
-  { date: '2025-07-03T15:30:00.000Z', visitors: 789 },
-  { date: '2025-07-04T15:30:00.000Z', visitors: 1022 },
-  { date: '2025-07-05T15:30:00.000Z', visitors: 850 },
-  { date: '2025-07-06T15:30:00.000Z', visitors: 1321 },
-  { date: '2025-07-07T15:30:00.000Z', visitors: 1774 },
-  { date: '2025-07-08T15:30:00.000Z', visitors: 1541 },
-  { date: '2025-07-09T15:30:00.000Z', visitors: 1892 },
-]
-
 const chartConfig = {
-  visitors: {
+  amount: {
     label: 'visitantes',
     icon: UserMultipleIcon,
     color: 'hsl(var(--blue-base))',
   },
 } satisfies ChartConfig
 
-export function DashboardChart() {
+export interface ChartPoint {
+  date: string
+  amount: number
+}
+
+interface DashboardChartProps {
+  chartData: ChartPoint[]
+}
+
+export function DashboardChart({ chartData }: DashboardChartProps) {
   return (
     <ChartContainer config={chartConfig} className="min-h-[266px] w-full">
       <LineChart accessibilityLayer data={chartData}>
@@ -74,7 +64,7 @@ export function DashboardChart() {
           }}
         />
         <YAxis
-          dataKey="visitors"
+          dataKey="amount"
           width={40}
           axisLine={false}
           tickLine={false}
@@ -114,9 +104,9 @@ export function DashboardChart() {
           }
         />
         <Line
-          dataKey="visitors"
+          dataKey="amount"
           type="natural"
-          stroke="var(--color-visitors)"
+          stroke="var(--color-amount)"
           strokeWidth={2}
           dot={false}
         />
