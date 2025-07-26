@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 
+import { getAllCategories } from '@/api/categories/get-all-categories'
 import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,7 +17,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { mockCategories, Product } from '@/types/product'
+import { Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 
 import { productFormInputs, productFormSchema } from './product-form.schema'
@@ -41,6 +43,11 @@ export function ProductForm({
   } = useForm<productFormInputs>({
     resolver: zodResolver(productFormSchema),
     defaultValues: getProductFormDefaultValues(initialData),
+  })
+
+  const { data: allCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
   })
 
   return (
@@ -141,7 +148,7 @@ export function ProductForm({
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    {mockCategories.map((category) => (
+                    {allCategories?.categories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.title}
                       </SelectItem>
