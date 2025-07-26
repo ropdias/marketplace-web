@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import { uploadImages } from '@/api/attachments/upload-images'
@@ -21,7 +21,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { Product } from '@/types/product'
+import { Product, ProductStatus } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
@@ -136,6 +136,14 @@ export function ProductForm({ initialData }: ProductFormProps) {
     }
   }
 
+  const isDisabled = () => {
+    return (
+      initialData?.status === ProductStatus.CANCELLED ||
+      initialData?.status === ProductStatus.SOLD ||
+      isSubmitting
+    )
+  }
+
   return (
     <div className="flex-start flex gap-6">
       <div className="flex-shrink-0">
@@ -150,6 +158,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
               {...(errors.image && {
                 errorMessage: errors.image.message,
               })}
+              disabled={isDisabled()}
             />
           )}
         />
@@ -176,6 +185,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
                   {...(errors.title && {
                     errorMessage: errors.title.message,
                   })}
+                  disabled={isDisabled()}
                 />
               </div>
               <div className="w-[12.5rem] flex-shrink-0">
@@ -200,6 +210,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
                         onChange={(e) =>
                           field.onChange(currencyApplyMask(e.target.value))
                         }
+                        disabled={isDisabled()}
                       />
                     )
                   }}
@@ -214,13 +225,18 @@ export function ProductForm({ initialData }: ProductFormProps) {
               {...(errors.description && {
                 errorMessage: errors.description.message,
               })}
+              disabled={isDisabled()}
             />
             <Controller
               name="categoryId"
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={isDisabled()}
+                >
                   <SelectTrigger
                     onClear={() => field.onChange('')}
                     selectedValue={field.value}
@@ -244,16 +260,18 @@ export function ProductForm({ initialData }: ProductFormProps) {
           </div>
           <div className="flex gap-3">
             <Button
-              asChild
               variant="outline"
+              type="button"
               className="h-12 flex-1 justify-center"
+              disabled={isDisabled()}
+              onClick={() => navigate('/products')}
             >
-              <Link to="/">Cancelar</Link>
+              Cancelar
             </Button>
             <Button
               className="h-12 flex-1 justify-center"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isDisabled()}
             >
               {initialData ? 'Salvar e atualizar' : 'Salvar e publicar'}
             </Button>

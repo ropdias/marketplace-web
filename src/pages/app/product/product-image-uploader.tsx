@@ -11,6 +11,7 @@ interface ProductImageUploaderProps {
   errorMessage?: string
   id: string
   defaultImageUrl?: string
+  disabled: boolean
 }
 
 export function ProductImageUploader({
@@ -18,6 +19,7 @@ export function ProductImageUploader({
   errorMessage,
   id,
   defaultImageUrl,
+  disabled,
 }: ProductImageUploaderProps) {
   const [image, setImage] = useState<string | null>(defaultImageUrl ?? null)
 
@@ -48,6 +50,7 @@ export function ProductImageUploader({
           accept="image/*"
           className="hidden"
           onChange={handleFileChange}
+          disabled={disabled}
         />
         <Label htmlFor={id} className="group relative cursor-pointer">
           <div className="absolute left-1/2 top-1/2 flex w-[9.9375rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 overflow-hidden">
