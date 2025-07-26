@@ -1,3 +1,4 @@
+import { PackageIcon } from 'hugeicons-react'
 import { Link } from 'react-router'
 
 import { TagCategory } from '@/components/tag-category'
@@ -16,11 +17,17 @@ export function ProductItem({ product }: ProductItemProps) {
       to={`/product/${product.id}/edit`}
       className="relative flex w-full cursor-pointer flex-col gap-1 rounded-[20px] bg-white p-1 outline-none transition-shadow hover:ring-2 hover:ring-blue-base focus-visible:ring-2 focus-visible:ring-blue-base"
     >
-      <img
-        src={product.attachments[0].url}
-        alt={`Imagem do ${product.title}`}
-        className="h-[9rem] w-full rounded-[16px] object-cover"
-      />
+      {product.attachments[0] ? (
+        <img
+          src={product.attachments[0].url}
+          alt={`Imagem do ${product.title}`}
+          className="h-[9rem] w-full rounded-[16px] object-cover"
+        />
+      ) : (
+        <div className="flex h-[9rem] w-full items-center justify-center">
+          <PackageIcon size={64} className="text-orange-base" />
+        </div>
+      )}
       <div className="flex flex-col gap-2 px-3 pb-4 pt-3">
         <div className="flex items-center justify-between">
           <span
