@@ -9,25 +9,23 @@ import { getProductById } from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
 import { ProductForm } from './product-form'
-import { productFormInputs } from './product-form.schema'
 
 export function EditProduct() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { data: products, isError } = useQuery({
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById({ id: id! }),
     enabled: !!id,
     retry: false,
   })
-
-  async function handleProductFormSubmit(data: productFormInputs) {
-    const priceInCents = unmaskCurrencyToCents(data.priceInCents)
-  }
 
   useEffect(() => {
     if (isError) {
@@ -35,6 +33,8 @@ export function EditProduct() {
       navigate('/products')
     }
   }, [isError, navigate])
+
+  if (isLoading) return null
 
   return (
     <>
@@ -61,11 +61,7 @@ export function EditProduct() {
         </div>
       </div>
 
-      <ProductForm
-        handleProductFormSubmit={handleProductFormSubmit}
-        action="edit"
-        initialData={products?.product}
-      />
+      <ProductForm initialData={products?.product} />
     </>
   )
 }
