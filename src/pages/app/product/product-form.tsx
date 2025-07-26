@@ -1,9 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
+import { uploadImages } from '@/api/attachments/upload-images'
 import { getAllCategories } from '@/api/categories/get-all-categories'
+import { createProduct } from '@/api/products/create-product'
+import { editProduct } from '@/api/products/edit-product'
 import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,22 +23,19 @@ import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { Product } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
+import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
 import { productFormInputs, productFormSchema } from './product-form.schema'
 import { getProductFormDefaultValues } from './product-form.utils'
 import { ProductImageUploader } from './product-image-uploader'
 
 interface ProductFormProps {
-  handleProductFormSubmit: (data: productFormInputs) => Promise<void>
-  action: 'create' | 'edit'
   initialData?: Product
 }
 
-export function ProductForm({
-  handleProductFormSubmit,
-  action,
-  initialData,
-}: ProductFormProps) {
+export function ProductForm({ initialData }: ProductFormProps) {
+  const navigate = useNavigate()
+
   const {
     control,
     register,
@@ -49,6 +50,83 @@ export function ProductForm({
     queryKey: ['categories'],
     queryFn: getAllCategories,
   })
+
+  const { mutateAsync: uploadImagesFn } = useMutation({
+    mutationFn: uploadImages,
+  })
+
+  const { mutateAsync: createProductFn } = useMutation({
+    mutationFn: createProduct,
+  })
+
+  const { mutateAsync: editProductFn } = useMutation({
+    mutationFn: editProduct,
+  })
+
+  async function handleProductFormSubmit(data: productFormInputs) {
+    const priceInCents = unmaskCurrencyToCents(data.priceInCents)
+    let attachmentsIds: string[] = []
+
+    if (initialData) {
+      attachmentsIds = initialData.attachments.map(
+        (attachment) => attachment.id,
+      )
+    }
+
+    if (data.image) {
+      const files = new FormData()
+      files.append('files', data.image)
+
+      try {
+        const uploadImagesResponse = await uploadImagesFn({ files })
+        attachmentsIds = uploadImagesResponse.attachments.map(
+          (attachment) => attachment.id,
+        )
+      } catch {
+        toast.error('Erro ao enviar imagem de perfil. Tente novamente.')
+        return
+      }
+    }
+
+    if (initialData) {
+      try {
+        await editProductFn({
+          pathParams: { id: initialData.id },
+          body: {
+            title: data.title,
+            categoryId: data.categoryId,
+            description: data.description,
+            priceInCents,
+            attachmentsIds,
+          },
+        })
+
+        toast.success('Produto editado com sucesso!')
+        navigate(`/products`)
+      } catch {
+        toast.error(
+          'Erro ao editar o produto. Verifique os dados e tente novamente.',
+        )
+      }
+    } else {
+      try {
+        await createProductFn({
+          title: data.title,
+          categoryId: data.categoryId,
+          description: data.description,
+          priceInCents,
+          attachmentsIds,
+        })
+
+        toast.success('Produto cadastrado com sucesso!')
+        navigate(`/products`)
+      } catch {
+        toast.error(
+          'Erro ao cadastrar o produto. Verifique os dados e tente novamente.',
+        )
+      }
+    }
+  }
 
   return (
     <div className="flex-start flex gap-6">
@@ -73,9 +151,7 @@ export function ProductForm({
           <p className={cn('text-gray-300', getTailwindClass('font-title-sm'))}>
             Dados do produto
           </p>
-          {action === 'edit' && initialData && (
-            <TagStatus status={initialData.status} />
-          )}
+          {initialData && <TagStatus status={initialData.status} />}
         </div>
         <form
           className="flex flex-col gap-10"
@@ -171,7 +247,7 @@ export function ProductForm({
               type="submit"
               disabled={isSubmitting}
             >
-              {action === 'edit' ? 'Salvar e atualizar' : 'Salvar e publicar'}
+              {initialData ? 'Salvar e atualizar' : 'Salvar e publicar'}
             </Button>
           </div>
         </form>
