@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
@@ -35,6 +35,7 @@ interface ProductFormProps {
 
 export function ProductForm({ initialData }: ProductFormProps) {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const {
     control,
@@ -43,7 +44,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
     formState: { isSubmitting, errors },
   } = useForm<productFormInputs>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: getProductFormDefaultValues(initialData),
+    values: getProductFormDefaultValues(initialData),
   })
 
   const { data: allCategories } = useQuery({
@@ -61,6 +62,13 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
   const { mutateAsync: editProductFn } = useMutation({
     mutationFn: editProduct,
+    onSuccess: (updated) => {
+      queryClient.setQueryData(['product', updated.product.id], updated)
+      queryClient.invalidateQueries({
+        queryKey: ['products-from-seller'],
+        exact: false,
+      })
+    },
   })
 
   async function handleProductFormSubmit(data: productFormInputs) {
