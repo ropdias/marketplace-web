@@ -18,12 +18,15 @@ export interface EditProductResponse {
 }
 
 export async function editProduct({
-  id,
+  pathParams,
   body,
 }: {
-  id: EditProductPathParams
+  pathParams: EditProductPathParams
   body: EditProductBody
 }) {
-  const response = await api.put<EditProductResponse>(`/products/${id}`, body)
+  const response = await api.put<EditProductResponse>(
+    `/products/${pathParams.id}`,
+    body,
+  )
   return response.data
 }
