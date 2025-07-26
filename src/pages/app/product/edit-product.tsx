@@ -17,7 +17,7 @@ export function EditProduct() {
   const navigate = useNavigate()
 
   const {
-    data: products,
+    data: getProductResponse,
     isLoading,
     isError,
   } = useQuery({
@@ -61,7 +61,7 @@ export function EditProduct() {
         </div>
       </div>
 
-      <ProductForm initialData={products?.product} />
+      <ProductForm initialData={getProductResponse?.product} />
     </>
   )
 }
