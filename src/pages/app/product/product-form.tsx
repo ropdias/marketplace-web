@@ -10,7 +10,10 @@ import {
   createProduct,
   mapCreateProductErrorMessage,
 } from '@/api/products/create-product'
-import { editProduct } from '@/api/products/edit-product'
+import {
+  editProduct,
+  mapEditProductErrorMessage,
+} from '@/api/products/edit-product'
 import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -114,10 +117,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
         toast.success('Produto editado com sucesso!')
         navigate(`/products`)
-      } catch {
-        toast.error(
-          'Erro ao editar o produto. Verifique os dados e tente novamente.',
-        )
+      } catch (error) {
+        const message = mapEditProductErrorMessage(error)
+        if (message) toast.error(message)
       }
     } else {
       try {
