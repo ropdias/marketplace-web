@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { api } from '@/lib/axios'
 import { Product, ProductStatus } from '@/types/product'
 
@@ -24,4 +26,16 @@ export async function getAllProductsFromSeller({
     },
   )
   return response.data
+}
+
+export function mapGetAllProductsFromSellerErrorMessage(
+  error: unknown,
+): string {
+  if (isAxiosError(error)) {
+    const status = error.response?.status
+
+    if (status === 404) return 'O vendedor não foi encontrado.'
+  }
+
+  return ''
 }
