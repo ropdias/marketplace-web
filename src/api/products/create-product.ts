@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { api } from '@/lib/axios'
 import { Product } from '@/types/product'
 
@@ -28,4 +30,15 @@ export async function createProduct({
     attachmentsIds,
   })
   return response.data
+}
+
+export function mapCreateProductErrorMessage(error: unknown): string {
+  if (isAxiosError(error)) {
+    const status = error.response?.status
+
+    if (status === 404)
+      return 'O vendedor, categoria ou anexo não foi encontrado.'
+  }
+
+  return ''
 }
