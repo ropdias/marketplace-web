@@ -5,7 +5,10 @@ import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 
-import { changeProductStatus } from '@/api/products/change-product-status'
+import {
+  changeProductStatus,
+  mapChangeProductStatusErrorMessage,
+} from '@/api/products/change-product-status'
 import { getProductById } from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -32,13 +35,6 @@ export function EditProduct() {
 
   const { mutateAsync: changeProductStatusFn } = useMutation({
     mutationFn: changeProductStatus,
-    onSuccess: (updated) => {
-      queryClient.setQueryData(['product', updated.product.id], updated)
-      queryClient.invalidateQueries({
-        queryKey: ['products-from-seller'],
-        exact: false,
-      })
-    },
   })
 
   useEffect(() => {
@@ -49,6 +45,27 @@ export function EditProduct() {
   }, [isError, navigate])
 
   if (isLoading) return null
+
+  const handleChangeProductStatus = async ({
+    id,
+    status,
+  }: {
+    id: string
+    status: ProductStatus
+  }) => {
+    try {
+      const response = await changeProductStatusFn({ id, status })
+      queryClient.setQueryData(['product', response.product.id], response)
+      queryClient.invalidateQueries({
+        queryKey: ['products-from-seller'],
+        exact: false,
+      })
+      toast.success('Status do produto alterado com sucesso!')
+    } catch (error) {
+      const message = mapChangeProductStatusErrorMessage(error)
+      if (message) toast.error(message)
+    }
+  }
 
   return (
     <>
@@ -74,7 +91,7 @@ export function EditProduct() {
               <FormLink
                 iconLeft={Tick02Icon}
                 onClick={() => {
-                  changeProductStatusFn({
+                  handleChangeProductStatus({
                     id: getProductResponse?.product.id,
                     status: ProductStatus.AVAILABLE,
                   })
@@ -92,7 +109,7 @@ export function EditProduct() {
               <FormLink
                 iconLeft={Tick02Icon}
                 onClick={() => {
-                  changeProductStatusFn({
+                  handleChangeProductStatus({
                     id: getProductResponse?.product.id,
                     status: ProductStatus.SOLD,
                   })
@@ -103,7 +120,7 @@ export function EditProduct() {
               <FormLink
                 iconLeft={UnavailableIcon}
                 onClick={() => {
-                  changeProductStatusFn({
+                  handleChangeProductStatus({
                     id: getProductResponse?.product.id,
                     status: ProductStatus.CANCELLED,
                   })
@@ -121,7 +138,7 @@ export function EditProduct() {
               <FormLink
                 iconLeft={UnavailableIcon}
                 onClick={() => {
-                  changeProductStatusFn({
+                  handleChangeProductStatus({
                     id: getProductResponse?.product.id,
                     status: ProductStatus.AVAILABLE,
                   })
