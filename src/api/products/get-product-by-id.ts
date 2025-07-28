@@ -20,7 +20,7 @@ export function mapGetProductByIdErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
     const status = error.response?.status
 
-    if (status === 404) return 'O produto não foi encontrado.'
+    if (status === 404) return 'Erro: O produto não foi encontrado.'
   }
 
   return ''

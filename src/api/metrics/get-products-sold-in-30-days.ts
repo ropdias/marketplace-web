@@ -17,7 +17,7 @@ export function mapGetProductsSoldIn30DaysErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
     const status = error.response?.status
 
-    if (status === 404) return 'O vendedor não foi encontrado.'
+    if (status === 404) return 'Erro: O vendedor não foi encontrado.'
   }
 
   return ''

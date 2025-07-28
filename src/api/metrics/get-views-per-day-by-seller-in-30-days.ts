@@ -22,7 +22,7 @@ export function mapGetViewsPerDayBySellerIn30DaysGetViewsBySellerIn30DaysErrorMe
   if (isAxiosError(error)) {
     const status = error.response?.status
 
-    if (status === 404) return 'O vendedor não foi encontrado.'
+    if (status === 404) return 'Erro: O vendedor não foi encontrado.'
   }
 
   return ''

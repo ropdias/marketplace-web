@@ -15,7 +15,7 @@ export function mapSignInErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
     const status = error.response?.status
 
-    if (status === 403) return 'Credenciais inválidas.'
+    if (status === 403) return 'Erro: Credenciais inválidas.'
   }
 
   return ''

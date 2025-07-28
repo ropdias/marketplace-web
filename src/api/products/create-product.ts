@@ -37,7 +37,7 @@ export function mapCreateProductErrorMessage(error: unknown): string {
     const status = error.response?.status
 
     if (status === 404)
-      return 'O vendedor, categoria ou anexo não foi encontrado.'
+      return 'Erro: O vendedor, categoria ou anexo não foi encontrado.'
   }
 
   return ''

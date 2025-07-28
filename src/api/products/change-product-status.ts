@@ -27,9 +27,9 @@ export function mapChangeProductStatusErrorMessage(error: unknown): string {
     const status = error.response?.status
 
     if (status === 403)
-      return 'O produto não pertence ao vendedor ou está com o mesmo status.'
+      return 'Erro: O produto não pertence ao vendedor ou está com o mesmo status.'
 
-    if (status === 404) return 'O produto não foi encontrado.'
+    if (status === 404) return 'Erro: O produto não foi encontrado.'
   }
 
   return ''
