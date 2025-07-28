@@ -112,7 +112,7 @@ export function SignUp() {
         const uploadImagesResponse = await uploadImagesFn({ files })
         avatarId = uploadImagesResponse.attachments[0]?.id ?? null
       } catch {
-        toast.error('Erro ao enviar imagem de perfil. Tente novamente.')
+        toast.error('Erro: Não foi possível a enviar imagem do perfil.')
         return
       }
     }
