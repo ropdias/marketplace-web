@@ -9,7 +9,10 @@ import {
   changeProductStatus,
   mapChangeProductStatusErrorMessage,
 } from '@/api/products/change-product-status'
-import { getProductById } from '@/api/products/get-product-by-id'
+import {
+  getProductById,
+  mapGetProductByIdErrorMessage,
+} from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -26,6 +29,7 @@ export function EditProduct() {
     data: getProductResponse,
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById({ id: id! }),
@@ -38,11 +42,12 @@ export function EditProduct() {
   })
 
   useEffect(() => {
-    if (isError) {
-      toast.error('Produto não encontrado.')
+    if (isError && error) {
+      const message = mapGetProductByIdErrorMessage(error)
+      toast.error(message)
       navigate('/products')
     }
-  }, [isError, navigate])
+  }, [error, isError, navigate])
 
   if (isLoading) return null
 
