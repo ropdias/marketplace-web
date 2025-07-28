@@ -6,7 +6,10 @@ import { toast } from 'sonner'
 
 import { uploadImages } from '@/api/attachments/upload-images'
 import { getAllCategories } from '@/api/categories/get-all-categories'
-import { createProduct } from '@/api/products/create-product'
+import {
+  createProduct,
+  mapCreateProductErrorMessage,
+} from '@/api/products/create-product'
 import { editProduct } from '@/api/products/edit-product'
 import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
@@ -128,10 +131,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
         toast.success('Produto cadastrado com sucesso!')
         navigate(`/products`)
-      } catch {
-        toast.error(
-          'Erro ao cadastrar o produto. Verifique os dados e tente novamente.',
-        )
+      } catch (error) {
+        const message = mapCreateProductErrorMessage(error)
+        if (message) toast.error(message)
       }
     }
   }
