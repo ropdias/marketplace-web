@@ -30,6 +30,16 @@ export function AppLayout() {
       (response) => response,
       (error) => {
         if (isAxiosError(error)) {
+          if (
+            error.code === 'ERR_NETWORK' ||
+            error.message === 'Network Error'
+          ) {
+            logoutAndRedirect(
+              'Servidor indisponível. Tente novamente mais tarde.',
+            )
+            return Promise.reject(error)
+          }
+
           const status = error.response?.status
           const message = error.response?.data.message
           if (status === 401 && message === 'Unauthorized') {
