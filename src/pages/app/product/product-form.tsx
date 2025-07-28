@@ -73,13 +73,6 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
   const { mutateAsync: editProductFn } = useMutation({
     mutationFn: editProduct,
-    onSuccess: (updated) => {
-      queryClient.setQueryData(['product', updated.product.id], updated)
-      queryClient.invalidateQueries({
-        queryKey: ['products-from-seller'],
-        exact: false,
-      })
-    },
   })
 
   async function handleProductFormSubmit(data: productFormInputs) {
@@ -102,14 +95,14 @@ export function ProductForm({ initialData }: ProductFormProps) {
           (attachment) => attachment.id,
         )
       } catch {
-        toast.error('Erro ao enviar imagem de perfil. Tente novamente.')
+        toast.error('Erro: Não foi possível a enviar imagem do produto.')
         return
       }
     }
 
     if (initialData) {
       try {
-        await editProductFn({
+        const response = await editProductFn({
           pathParams: { id: initialData.id },
           body: {
             title: data.title,
@@ -120,6 +113,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
           },
         })
 
+        queryClient.setQueryData(['product', response.product.id], response)
+        queryClient.invalidateQueries({
+          queryKey: ['products-from-seller'],
+          exact: false,
+        })
         toast.success('Produto editado com sucesso!')
         navigate(`/products`)
       } catch (error) {
