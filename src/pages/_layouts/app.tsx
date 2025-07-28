@@ -13,7 +13,11 @@ export function AppLayout() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { isLoading: isLoadingProfile } = useQuery({
+  const {
+    isLoading: isLoadingProfile,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['seller-profile'],
     queryFn: getSellerProfile,
     staleTime: Infinity,
@@ -55,6 +59,14 @@ export function AppLayout() {
       api.interceptors.response.eject(interceptorId)
     }
   }, [navigate, queryClient])
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(
+        'Erro: Não foi possível pegar os dados do perfil do vendedor.',
+      )
+    }
+  }, [error, isError])
 
   return (
     <div className="flex min-h-screen min-w-[66.875rem] flex-col gap-8 px-5 antialiased">
