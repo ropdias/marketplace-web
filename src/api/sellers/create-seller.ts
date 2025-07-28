@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { api } from '@/lib/axios'
 import { Seller } from '@/types/seller'
 
@@ -31,4 +33,16 @@ export async function createSeller({
     passwordConfirmation,
   })
   return response.data
+}
+
+export function mapCreateSellerErrorMessage(error: unknown): string {
+  if (isAxiosError(error)) {
+    const status = error.response?.status
+
+    if (status === 404) return 'Erro: O avatar não foi encontrado.'
+
+    if (status === 409) return 'Erro: O e-mail ou telefone já existe.'
+  }
+
+  return ''
 }
