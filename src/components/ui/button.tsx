@@ -6,13 +6,20 @@ import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-between whitespace-nowrap rounded-[10px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-between whitespace-nowrap rounded-[10px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        solid: 'bg-orange-base text-white hover:bg-orange-dark',
-        outline:
-          'border border-orange-base text-orange-base bg-transparent hover:border-orange-dark hover:text-orange-dark hover:bg-background',
+        solid: [
+          'bg-orange-base text-white',
+          'hover:bg-orange-dark',
+          'disabled:hover:bg-orange-base',
+        ],
+        outline: [
+          'border border-orange-base text-orange-base bg-transparent',
+          'hover:border-orange-dark hover:text-orange-dark hover:bg-background',
+          'disabled:hover:border-orange-base disabled:hover:text-orange-base disabled:hover:bg-transparent',
+        ],
       },
       size: {
         medium: cn(

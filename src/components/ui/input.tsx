@@ -38,6 +38,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               getTailwindClass('font-label-md'),
               'text-gray-300 group-focus-within:text-orange-base',
+              props.disabled && 'cursor-not-allowed opacity-50',
             )}
           >
             {labelText}
@@ -54,6 +55,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   errorMessage
                     ? 'text-danger'
                     : 'group-focus-within:text-orange-base',
+                  props.disabled && 'cursor-not-allowed opacity-50',
                 )}
               >
                 {IconLeft}
@@ -67,6 +69,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   errorMessage
                     ? 'text-danger'
                     : 'group-focus-within:text-orange-base',
+                  props.disabled && 'cursor-not-allowed opacity-50',
                 )}
               />
             ))}
@@ -85,6 +88,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               onClick={onClickIconRight}
               type="button"
               aria-label="Mostrar ou ocultar senha"
+              className="disabled:cursor-not-allowed disabled:opacity-50"
             >
               <IconRight
                 size={24}

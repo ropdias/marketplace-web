@@ -21,6 +21,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
             className={cn(
               getTailwindClass('font-label-md'),
               'text-gray-300 group-focus-within:text-orange-base',
+              props.disabled && 'cursor-not-allowed opacity-50',
             )}
           >
             {labelText}

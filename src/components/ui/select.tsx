@@ -45,11 +45,11 @@ const SelectTrigger = React.forwardRef<
     ref,
   ) => {
     return (
-      <div className="relative">
+      <div className="group relative">
         <SelectPrimitive.Trigger
           ref={ref}
           className={cn(
-            'group flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+            'flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
             className,
           )}
           {...props}
@@ -106,7 +106,8 @@ const SelectTrigger = React.forwardRef<
             onClick={() => {
               if (onClear) onClear()
             }}
-            className="absolute bottom-3 right-[2.125rem] z-40 block h-6 w-6 rounded-full bg-shape p-1 text-gray-300 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2"
+            disabled={props.disabled}
+            className="absolute bottom-3 right-[2.125rem] z-40 block h-6 w-6 rounded-full bg-shape p-1 text-gray-300 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Cancel01Icon className="h-4 w-4" />
           </button>

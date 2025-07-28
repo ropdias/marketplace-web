@@ -244,6 +244,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     {...(errors.categoryId && {
                       errorMessage: errors.categoryId.message,
                     })}
+                    disabled={isDisabled()}
                   >
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
