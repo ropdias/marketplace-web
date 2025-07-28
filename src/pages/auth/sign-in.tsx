@@ -14,7 +14,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signIn } from '@/api/sessions/sign-in'
+import { mapSignInErrorMessage, signIn } from '@/api/sessions/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -65,8 +65,9 @@ export function SignIn() {
       queryClient.clear() // clear all queries
       toast.success('Autenticado com sucesso!')
       navigate('/')
-    } catch {
-      toast.error('Credenciais inválidas.')
+    } catch (error) {
+      const message = mapSignInErrorMessage(error)
+      if (message) toast.error(message)
     }
   }
 
