@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Logout01Icon, UserIcon } from 'hugeicons-react'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
 import { getSellerProfile } from '@/api/sellers/get-seller-profile'
 import { signOut } from '@/api/sessions/sign-out'
@@ -28,11 +29,19 @@ export function UserMenu() {
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
-    onSuccess: () => {
-      navigate('/sign-in', { replace: true })
-      queryClient.clear() // clear all queries
-    },
   })
+
+  const handleSignOut = async () => {
+    try {
+      await signOutFn()
+      toast.success('Logout realizado com sucesso.')
+    } catch {
+      toast.error('Não foi possível realizar o logout no servidor.')
+    } finally {
+      queryClient.clear()
+      navigate('/sign-in', { replace: true })
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -75,7 +84,7 @@ export function UserMenu() {
         <DropdownMenuItem
           className="flex items-center justify-between gap-2 p-0.5 text-orange-base [&_svg]:size-5"
           disabled={isSigningOut}
-          onClick={() => signOutFn()}
+          onClick={handleSignOut}
         >
           <span className={cn(getTailwindClass('font-action-sm'))}>Sair</span>
           <Logout01Icon />
