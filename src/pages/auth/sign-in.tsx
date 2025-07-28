@@ -59,7 +59,7 @@ export function SignIn() {
     mutationFn: signIn,
   })
 
-  async function handleSignIn(data: SignInFormInputs) {
+  const handleSignIn = async (data: SignInFormInputs) => {
     try {
       await authenticate({ email: data.email, password: data.password })
       queryClient.clear() // clear all queries
