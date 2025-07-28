@@ -45,11 +45,11 @@ const SelectTrigger = React.forwardRef<
     ref,
   ) => {
     return (
-      <div className="group relative">
+      <div className="relative">
         <SelectPrimitive.Trigger
           ref={ref}
           className={cn(
-            'flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+            'group flex w-full flex-col items-start bg-transparent outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-orange-base focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
             className,
           )}
           {...props}
