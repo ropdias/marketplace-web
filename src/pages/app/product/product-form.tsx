@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
@@ -53,7 +54,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
     values: getProductFormDefaultValues(initialData),
   })
 
-  const { data: allCategories } = useQuery({
+  const {
+    data: allCategories,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['categories'],
     queryFn: getAllCategories,
   })
@@ -147,6 +152,13 @@ export function ProductForm({ initialData }: ProductFormProps) {
       isSubmitting
     )
   }
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error('Erro: Não foi possível acessar as categorias dos produtos.')
+      navigate('/products')
+    }
+  }, [error, isError, navigate])
 
   return (
     <div className="flex-start flex gap-6">
