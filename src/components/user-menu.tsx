@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Logout01Icon, UserIcon } from 'hugeicons-react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
@@ -21,7 +22,11 @@ export function UserMenu() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { data: profile } = useQuery({
+  const {
+    data: profile,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['seller-profile'],
     queryFn: getSellerProfile,
     staleTime: Infinity,
@@ -42,6 +47,14 @@ export function UserMenu() {
       navigate('/sign-in', { replace: true })
     }
   }
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(
+        'Erro: Não foi possível pegar os dados do perfil do vendedor.',
+      )
+    }
+  }, [error, isError])
 
   return (
     <DropdownMenu>
