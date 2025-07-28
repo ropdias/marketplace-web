@@ -17,7 +17,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { uploadImages } from '@/api/attachments/upload-images'
-import { createSeller } from '@/api/sellers/create-seller'
+import {
+  createSeller,
+  mapCreateSellerErrorMessage,
+} from '@/api/sellers/create-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -126,8 +129,9 @@ export function SignUp() {
 
       toast.success('Cadastro realizado com sucesso!')
       navigate(`/sign-in?email=${data.email}`)
-    } catch {
-      toast.error('Erro ao criar conta. Verifique os dados e tente novamente.')
+    } catch (error) {
+      const message = mapCreateSellerErrorMessage(error)
+      if (message) toast.error(message)
     }
   }
 
