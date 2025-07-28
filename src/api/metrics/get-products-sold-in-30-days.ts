@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { api } from '@/lib/axios'
 
 export interface GetProductsSoldIn30DaysResponse {
@@ -9,4 +11,14 @@ export async function getProductsSoldIn30Days() {
     '/sellers/metrics/products/sold',
   )
   return response.data
+}
+
+export function mapGetProductsSoldIn30DaysErrorMessage(error: unknown): string {
+  if (isAxiosError(error)) {
+    const status = error.response?.status
+
+    if (status === 404) return 'O vendedor não foi encontrado.'
+  }
+
+  return ''
 }

@@ -7,12 +7,26 @@ import {
   Store04Icon,
   UserMultipleIcon,
 } from 'hugeicons-react'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { toast } from 'sonner'
 
-import { getProductsAvailableIn30Days } from '@/api/metrics/get-products-available-in-30-days'
-import { getProductsSoldIn30Days } from '@/api/metrics/get-products-sold-in-30-days'
-import { getViewsBySellerIn30Days } from '@/api/metrics/get-views-by-seller-in-30-days'
-import { getViewsPerDayBySellerIn30Days } from '@/api/metrics/get-views-per-day-by-seller-in-30-days'
+import {
+  getProductsAvailableIn30Days,
+  mapGetProductsAvailableIn30DaysErrorMessage,
+} from '@/api/metrics/get-products-available-in-30-days'
+import {
+  getProductsSoldIn30Days,
+  mapGetProductsSoldIn30DaysErrorMessage,
+} from '@/api/metrics/get-products-sold-in-30-days'
+import {
+  getViewsBySellerIn30Days,
+  mapGetViewsBySellerIn30DaysErrorMessage,
+} from '@/api/metrics/get-views-by-seller-in-30-days'
+import {
+  getViewsPerDayBySellerIn30Days,
+  mapGetViewsPerDayBySellerIn30DaysGetViewsBySellerIn30DaysErrorMessage,
+} from '@/api/metrics/get-views-per-day-by-seller-in-30-days'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -20,22 +34,38 @@ import { ChartPoint, DashboardChart } from './dashboard-chart'
 import { DashboardItem } from './dashboard-item'
 
 export function Dashboard() {
-  const { data: productsSoldIn30Days } = useQuery({
+  const {
+    data: productsSoldIn30Days,
+    error: productsSoldIn30DaysError,
+    isError: productsSoldIn30DaysIsError,
+  } = useQuery({
     queryKey: ['products-sold-in-30-days'],
     queryFn: getProductsSoldIn30Days,
   })
 
-  const { data: productsAvailableIn30Days } = useQuery({
+  const {
+    data: productsAvailableIn30Days,
+    error: productsAvailableIn30DaysError,
+    isError: productsAvailableIn30DaysIsError,
+  } = useQuery({
     queryKey: ['products-available-in-30-days'],
     queryFn: getProductsAvailableIn30Days,
   })
 
-  const { data: viewsBySellerIn30Days } = useQuery({
+  const {
+    data: viewsBySellerIn30Days,
+    error: viewsBySellerIn30DaysError,
+    isError: viewsBySellerIn30DaysIsError,
+  } = useQuery({
     queryKey: ['views-by-seller-in-30-days'],
     queryFn: getViewsBySellerIn30Days,
   })
 
-  const { data: viewsPerDayBySellerIn30Days } = useQuery({
+  const {
+    data: viewsPerDayBySellerIn30Days,
+    error: viewsPerDayBySellerIn30DaysError,
+    isError: viewsPerDayBySellerIn30DaysIsError,
+  } = useQuery({
     queryKey: ['views-per-day-by-seller-in-30-days'],
     queryFn: getViewsPerDayBySellerIn30Days,
   })
@@ -54,6 +84,46 @@ export function Dashboard() {
   if (views?.[views.length - 1]?.date) {
     endDate = parseISO(views[views.length - 1].date)
   }
+
+  useEffect(() => {
+    if (productsSoldIn30DaysIsError && productsSoldIn30DaysError) {
+      const message = mapGetProductsSoldIn30DaysErrorMessage(
+        productsSoldIn30DaysError,
+      )
+      toast.error(message)
+    }
+    if (productsAvailableIn30DaysIsError && productsAvailableIn30DaysError) {
+      const message = mapGetProductsAvailableIn30DaysErrorMessage(
+        productsAvailableIn30DaysError,
+      )
+      toast.error(message)
+    }
+    if (viewsBySellerIn30DaysIsError && viewsBySellerIn30DaysError) {
+      const message = mapGetViewsBySellerIn30DaysErrorMessage(
+        viewsBySellerIn30DaysError,
+      )
+      toast.error(message)
+    }
+    if (
+      viewsPerDayBySellerIn30DaysIsError &&
+      viewsPerDayBySellerIn30DaysError
+    ) {
+      const message =
+        mapGetViewsPerDayBySellerIn30DaysGetViewsBySellerIn30DaysErrorMessage(
+          viewsPerDayBySellerIn30DaysError,
+        )
+      toast.error(message)
+    }
+  }, [
+    productsSoldIn30DaysIsError,
+    productsSoldIn30DaysError,
+    productsAvailableIn30DaysIsError,
+    productsAvailableIn30DaysError,
+    viewsBySellerIn30DaysIsError,
+    viewsBySellerIn30DaysError,
+    viewsPerDayBySellerIn30DaysIsError,
+    viewsPerDayBySellerIn30DaysError,
+  ])
 
   return (
     <>
