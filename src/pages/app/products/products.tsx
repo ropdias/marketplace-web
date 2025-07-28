@@ -5,9 +5,13 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getAllProductsFromSeller } from '@/api/products/get-all-products-from-seller'
+import {
+  getAllProductsFromSeller,
+  mapGetAllProductsFromSellerErrorMessage,
+} from '@/api/products/get-all-products-from-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -71,7 +75,11 @@ export function Products() {
 
   const search = searchParams.get('search') ?? undefined
 
-  const { data: result } = useQuery({
+  const {
+    data: result,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['products-from-seller', status, search],
     queryFn: () =>
       getAllProductsFromSeller({
@@ -88,6 +96,13 @@ export function Products() {
 
     reset({ status, search })
   }, [searchParams, reset])
+
+  useEffect(() => {
+    if (isError && error) {
+      const message = mapGetAllProductsFromSellerErrorMessage(error)
+      toast.error(message)
+    }
+  }, [error, isError])
 
   return (
     <>
