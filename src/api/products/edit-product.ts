@@ -1,3 +1,5 @@
+import { isAxiosError } from 'axios'
+
 import { api } from '@/lib/axios'
 import { Product } from '@/types/product'
 
@@ -29,4 +31,17 @@ export async function editProduct({
     body,
   )
   return response.data
+}
+
+export function mapEditProductErrorMessage(error: unknown): string {
+  if (isAxiosError(error)) {
+    const status = error.response?.status
+
+    if (status === 403)
+      return 'Erro: Você não é o vendedor do produto ou o produto já foi vendido.'
+
+    if (status === 404) return 'Erro: O produto não foi encontrado.'
+  }
+
+  return ''
 }
