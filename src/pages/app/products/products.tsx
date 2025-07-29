@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
 import { SaleTag02Icon, Search01Icon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -8,10 +7,7 @@ import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import {
-  getAllProductsFromSeller,
-  mapGetAllProductsFromSellerErrorMessage,
-} from '@/api/products/get-all-products-from-seller'
+import { mapGetAllProductsFromSellerErrorMessage } from '@/api/products/get-all-products-from-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -21,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useAllProductsFromSeller } from '@/hooks/queries/use-all-products-from-seller'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { ProductStatus } from '@/types/product'
@@ -81,14 +78,7 @@ export function Products() {
     isError,
     error,
     isLoading,
-  } = useQuery({
-    queryKey: ['products-from-seller', status, search],
-    queryFn: () =>
-      getAllProductsFromSeller({
-        status,
-        search,
-      }),
-  })
+  } = useAllProductsFromSeller({ status, search })
 
   useEffect(() => {
     const parsedStatus = statusParamSchema.safeParse(searchParams.get('status'))
