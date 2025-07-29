@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils'
 import { ProductStatus } from '@/types/product'
 
 import { ProductItem } from './product-item'
+import { ProductItemSkeleton } from './product-item-skeleton'
 
 const filterFormSchema = z.object({
   search: z
@@ -79,6 +80,7 @@ export function Products() {
     data: result,
     isError,
     error,
+    isLoading,
   } = useQuery({
     queryKey: ['products-from-seller', status, search],
     queryFn: () =>
@@ -168,10 +170,14 @@ export function Products() {
           </form>
         </div>
         <div className="grid w-full grid-cols-2 grid-rows-3 gap-4">
-          {result &&
-            result.products.map((product) => (
-              <ProductItem key={product.id} product={product} />
-            ))}
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <ProductItemSkeleton key={i} />
+              ))
+            : result &&
+              result.products.map((product) => (
+                <ProductItem key={product.id} product={product} />
+              ))}
         </div>
       </div>
     </>
