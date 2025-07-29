@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-import { getAllCategories } from '@/api/categories/get-all-categories'
+import { useCategories } from '@/hooks/queries/useCategories'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -19,10 +18,7 @@ export function CreateProduct() {
     isLoading: isLoadingAllCategories,
     isError: isErrorAllCategories,
     error: errorAllCategories,
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getAllCategories,
-  })
+  } = useCategories()
 
   useEffect(() => {
     if (isErrorAllCategories && errorAllCategories) {

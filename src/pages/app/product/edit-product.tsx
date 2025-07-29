@@ -1,17 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft02Icon, Tick02Icon, UnavailableIcon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 
-import { getAllCategories } from '@/api/categories/get-all-categories'
 import {
   changeProductStatus,
   mapChangeProductStatusErrorMessage,
 } from '@/api/products/change-product-status'
 import { mapGetProductByIdErrorMessage } from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
+import { useCategories } from '@/hooks/queries/useCategories'
 import { useProduct } from '@/hooks/queries/useProduct'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -37,10 +37,7 @@ export function EditProduct() {
     isLoading: isLoadingAllCategories,
     isError: isErrorAllCategories,
     error: errorAllCategories,
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getAllCategories,
-  })
+  } = useCategories()
 
   const { mutateAsync: changeProductStatusFn } = useMutation({
     mutationFn: changeProductStatus,
