@@ -1,34 +1,26 @@
-import { useQuery } from '@tanstack/react-query'
 import { UserMultipleIcon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-import {
-  getViewsBySellerIn30Days,
-  mapGetViewsBySellerIn30DaysErrorMessage,
-} from '@/api/metrics/get-views-by-seller-in-30-days'
+import { mapGetViewsBySellerIn30DaysErrorMessage } from '@/api/metrics/get-views-by-seller-in-30-days'
+import { useViewsBySellerIn30Days } from '@/hooks/queries/use-views-by-seller-in-30-days'
 
 import { DashboardItem } from './dashboard-item'
 
 export function DashboardViewsBySeller() {
   const {
     data: viewsBySellerIn30Days,
-    error: viewsBySellerIn30DaysError,
-    isError: viewsBySellerIn30DaysIsError,
+    error,
+    isError,
     isLoading,
-  } = useQuery({
-    queryKey: ['views-by-seller-in-30-days'],
-    queryFn: getViewsBySellerIn30Days,
-  })
+  } = useViewsBySellerIn30Days()
 
   useEffect(() => {
-    if (viewsBySellerIn30DaysIsError && viewsBySellerIn30DaysError) {
-      const message = mapGetViewsBySellerIn30DaysErrorMessage(
-        viewsBySellerIn30DaysError,
-      )
+    if (isError && error) {
+      const message = mapGetViewsBySellerIn30DaysErrorMessage(error)
       toast.error(message)
     }
-  }, [viewsBySellerIn30DaysError, viewsBySellerIn30DaysIsError])
+  }, [error, isError])
 
   return (
     <DashboardItem
