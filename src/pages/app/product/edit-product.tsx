@@ -64,7 +64,7 @@ export function EditProduct() {
     try {
       await changeProductStatusFn({ id, status })
     } catch {
-      return
+      // Error already handled in onError
     }
   }
 
