@@ -1,6 +1,7 @@
 import { HugeiconsProps } from 'hugeicons-react'
 import { FC, RefAttributes } from 'react'
 
+import { Skeleton } from '@/components/ui/skeleton'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -9,6 +10,7 @@ interface DashboardItemProps {
   iconColor?: string
   count?: number
   label?: string
+  isLoading: boolean
 }
 
 export function DashboardItem({
@@ -16,6 +18,7 @@ export function DashboardItem({
   iconColor,
   count,
   label,
+  isLoading,
 }: DashboardItemProps) {
   return (
     <div className="flex items-center justify-center gap-4 rounded-[20px] bg-white pl-3 pr-7">
@@ -23,12 +26,26 @@ export function DashboardItem({
         <Icon size={40} className={iconColor} />
       </div>
       <div className="flex-1">
-        <p className={cn('text-gray-400', getTailwindClass('font-title-lg'))}>
-          {count}
-        </p>
-        <p className={cn('text-gray-300', getTailwindClass('font-body-xs'))}>
-          {label}
-        </p>
+        {isLoading ? (
+          <>
+            <Skeleton className="h-[1.9rem] w-[3rem]" />
+            <Skeleton className="mt-1 h-[0.9rem] w-[5rem]" />
+            <Skeleton className="mt-0.5 h-[0.9rem] w-[5rem]" />
+          </>
+        ) : (
+          <>
+            <p
+              className={cn('text-gray-400', getTailwindClass('font-title-lg'))}
+            >
+              {count}
+            </p>
+            <p
+              className={cn('text-gray-300', getTailwindClass('font-body-xs'))}
+            >
+              {label}
+            </p>
+          </>
+        )}
       </div>
     </div>
   )
