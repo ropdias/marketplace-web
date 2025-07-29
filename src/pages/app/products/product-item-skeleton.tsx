@@ -23,10 +23,6 @@ export function ProductItemSkeleton() {
         <Skeleton className="h-[1.05rem] w-full" />
         <Skeleton className="mt-[-0.25rem] h-[1.05rem] w-full" />
       </div>
-      <div className="absolute right-3 top-3 flex gap-1">
-        <Skeleton className="h-[1.25rem] w-[5rem]" />
-        <Skeleton className="h-[1.25rem] w-[5rem]" />
-      </div>
     </div>
   )
 }
