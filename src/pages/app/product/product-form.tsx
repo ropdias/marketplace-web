@@ -4,7 +4,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-import { uploadImages } from '@/api/attachments/upload-images'
 import {
   createProduct,
   mapCreateProductErrorMessage,
@@ -24,6 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useUploadImages } from '@/hooks/mutations/use-upload-images'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { Category, Product, ProductStatus } from '@/types/product'
@@ -53,9 +53,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
     values: getProductFormDefaultValues(initialData),
   })
 
-  const { mutateAsync: uploadImagesFn } = useMutation({
-    mutationFn: uploadImages,
-  })
+  const { mutateAsync: uploadImagesFn } = useUploadImages()
 
   const { mutateAsync: createProductFn } = useMutation({
     mutationFn: createProduct,
@@ -85,7 +83,8 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           (attachment) => attachment.id,
         )
       } catch {
-        toast.error('Erro: Não foi possível a enviar imagem do produto.')
+        // Error already handled in onError
+        // Return to avoid editing or creating a product without an image
         return
       }
     }

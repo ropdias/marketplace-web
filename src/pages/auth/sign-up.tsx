@@ -16,13 +16,13 @@ import { Link, useNavigate } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { uploadImages } from '@/api/attachments/upload-images'
 import {
   createSeller,
   mapCreateSellerErrorMessage,
 } from '@/api/sellers/create-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useUploadImages } from '@/hooks/mutations/use-upload-images'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { phoneApplyMask } from '@/utils/phone-apply-mask'
@@ -93,9 +93,7 @@ export function SignUp() {
   const isPasswordFilled = !!passwordValue
   const isConfirmPasswordFilled = !!confirmPasswordValue
 
-  const { mutateAsync: uploadImagesFn } = useMutation({
-    mutationFn: uploadImages,
-  })
+  const { mutateAsync: uploadImagesFn } = useUploadImages()
 
   const { mutateAsync: createSellerFn } = useMutation({
     mutationFn: createSeller,
@@ -112,7 +110,8 @@ export function SignUp() {
         const uploadImagesResponse = await uploadImagesFn({ files })
         avatarId = uploadImagesResponse.attachments[0]?.id ?? null
       } catch {
-        toast.error('Erro: Não foi possível a enviar imagem do perfil.')
+        // Error already handled in onError
+        // Return to avoid creating a seller without an image
         return
       }
     }
