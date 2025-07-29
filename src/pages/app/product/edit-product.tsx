@@ -10,11 +10,9 @@ import {
   changeProductStatus,
   mapChangeProductStatusErrorMessage,
 } from '@/api/products/change-product-status'
-import {
-  getProductById,
-  mapGetProductByIdErrorMessage,
-} from '@/api/products/get-product-by-id'
+import { mapGetProductByIdErrorMessage } from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
+import { useProduct } from '@/hooks/queries/useProduct'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 import { ProductStatus } from '@/types/product'
@@ -32,12 +30,7 @@ export function EditProduct() {
     isLoading: isLoadingProduct,
     isError: isErrorProduct,
     error: errorProduct,
-  } = useQuery({
-    queryKey: ['product', id],
-    queryFn: () => getProductById({ id: id! }),
-    enabled: !!id,
-    retry: false,
-  })
+  } = useProduct({ productId: id })
 
   const {
     data: allCategories,
