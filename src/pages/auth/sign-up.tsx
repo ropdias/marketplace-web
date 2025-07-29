@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -13,15 +12,11 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router'
-import { toast } from 'sonner'
 import { z } from 'zod'
 
-import {
-  createSeller,
-  mapCreateSellerErrorMessage,
-} from '@/api/sellers/create-seller'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useCreateSeller } from '@/hooks/mutations/use-create-seller'
 import { useUploadImages } from '@/hooks/mutations/use-upload-images'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -95,9 +90,7 @@ export function SignUp() {
 
   const { mutateAsync: uploadImagesFn } = useUploadImages()
 
-  const { mutateAsync: createSellerFn } = useMutation({
-    mutationFn: createSeller,
-  })
+  const { mutateAsync: createSellerFn } = useCreateSeller()
 
   async function handleSignUp(data: SignUpFormInputs) {
     let avatarId: string | null = null
@@ -126,11 +119,9 @@ export function SignUp() {
         passwordConfirmation: data.confirmPassword,
       })
 
-      toast.success('Cadastro realizado com sucesso!')
       navigate(`/sign-in?email=${data.email}`)
-    } catch (error) {
-      const message = mapCreateSellerErrorMessage(error)
-      if (message) toast.error(message)
+    } catch {
+      // Error already handled in onError
     }
   }
 
