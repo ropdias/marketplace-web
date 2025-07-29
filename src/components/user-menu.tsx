@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import { signOut } from '@/api/sessions/sign-out'
-import { useSellerProfile } from '@/hooks/queries/useSellerProfile'
+import { useSellerProfile } from '@/hooks/queries/use-seller-profile'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 

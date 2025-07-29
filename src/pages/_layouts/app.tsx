@@ -4,8 +4,8 @@ import { toast } from 'sonner'
 
 import { Header } from '@/components/header'
 import { SpinnerIcon } from '@/components/ui/spinner-icon'
-import { useSellerProfile } from '@/hooks/queries/useSellerProfile'
-import { useGlobalAxiosInterceptor } from '@/hooks/useGlobalAxiosInterceptor'
+import { useSellerProfile } from '@/hooks/queries/use-seller-profile'
+import { useGlobalAxiosInterceptor } from '@/hooks/use-global-axios-interceptor'
 
 export function AppLayout() {
   useGlobalAxiosInterceptor()

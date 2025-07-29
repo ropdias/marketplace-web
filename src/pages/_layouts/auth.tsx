@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router'
 
-import { useGlobalAxiosInterceptor } from '@/hooks/useGlobalAxiosInterceptor'
+import { useGlobalAxiosInterceptor } from '@/hooks/use-global-axios-interceptor'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
