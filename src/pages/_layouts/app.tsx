@@ -1,25 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Outlet } from 'react-router'
 import { toast } from 'sonner'
 
-import { getSellerProfile } from '@/api/sellers/get-seller-profile'
 import { Header } from '@/components/header'
 import { SpinnerIcon } from '@/components/ui/spinner-icon'
+import { useSellerProfile } from '@/hooks/queries/useSellerProfile'
 import { useGlobalAxiosInterceptor } from '@/hooks/useGlobalAxiosInterceptor'
 
 export function AppLayout() {
   useGlobalAxiosInterceptor()
 
-  const {
-    isLoading: isLoadingProfile,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['seller-profile'],
-    queryFn: getSellerProfile,
-    staleTime: Infinity,
-  })
+  const { isLoading: isLoadingProfile, isError, error } = useSellerProfile()
 
   useEffect(() => {
     if (isError && error) {

@@ -1,11 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Logout01Icon, UserIcon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-import { getSellerProfile } from '@/api/sellers/get-seller-profile'
 import { signOut } from '@/api/sessions/sign-out'
+import { useSellerProfile } from '@/hooks/queries/useSellerProfile'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -22,15 +22,7 @@ export function UserMenu() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const {
-    data: profile,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['seller-profile'],
-    queryFn: getSellerProfile,
-    staleTime: Infinity,
-  })
+  const { data: profile, isError, error } = useSellerProfile()
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
