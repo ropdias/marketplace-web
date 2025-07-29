@@ -1,46 +1,11 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { isAxiosError } from 'axios'
-import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router'
-import { toast } from 'sonner'
+import { Outlet } from 'react-router'
 
-import { api } from '@/lib/axios'
+import { useGlobalAxiosInterceptor } from '@/hooks/useGlobalAxiosInterceptor'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 export function AuthLayout() {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-
-  useEffect(() => {
-    const logoutAndRedirect = (message?: string) => {
-      if (message) toast.error(message)
-      navigate('/sign-in', { replace: true })
-      queryClient.clear() // clear all queries
-    }
-
-    const interceptorId = api.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (isAxiosError(error)) {
-          if (
-            error.code === 'ERR_NETWORK' ||
-            error.message === 'Network Error'
-          ) {
-            logoutAndRedirect(
-              'Servidor indisponível. Tente novamente mais tarde.',
-            )
-            return Promise.reject(error)
-          }
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => {
-      api.interceptors.response.eject(interceptorId)
-    }
-  }, [navigate, queryClient])
+  useGlobalAxiosInterceptor()
 
   return (
     <div className="flex min-h-screen antialiased">

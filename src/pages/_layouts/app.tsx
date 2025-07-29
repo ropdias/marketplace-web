@@ -1,17 +1,15 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { isAxiosError } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router'
+import { Outlet } from 'react-router'
 import { toast } from 'sonner'
 
 import { getSellerProfile } from '@/api/sellers/get-seller-profile'
 import { Header } from '@/components/header'
 import { SpinnerIcon } from '@/components/ui/spinner-icon'
-import { api } from '@/lib/axios'
+import { useGlobalAxiosInterceptor } from '@/hooks/useGlobalAxiosInterceptor'
 
 export function AppLayout() {
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
+  useGlobalAxiosInterceptor()
 
   const {
     isLoading: isLoadingProfile,
@@ -22,43 +20,6 @@ export function AppLayout() {
     queryFn: getSellerProfile,
     staleTime: Infinity,
   })
-
-  useEffect(() => {
-    const logoutAndRedirect = (message?: string) => {
-      if (message) toast.error(message)
-      navigate('/sign-in', { replace: true })
-      queryClient.clear() // clear all queries
-    }
-
-    const interceptorId = api.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (isAxiosError(error)) {
-          if (
-            error.code === 'ERR_NETWORK' ||
-            error.message === 'Network Error'
-          ) {
-            logoutAndRedirect(
-              'Servidor indisponível. Tente novamente mais tarde.',
-            )
-            return Promise.reject(error)
-          }
-
-          const status = error.response?.status
-          const message = error.response?.data.message
-          if (status === 401 && message === 'Unauthorized') {
-            logoutAndRedirect('Acesso não autorizado. Faça login novamente.')
-            return Promise.reject(error)
-          }
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => {
-      api.interceptors.response.eject(interceptorId)
-    }
-  }, [navigate, queryClient])
 
   useEffect(() => {
     if (isError && error) {
