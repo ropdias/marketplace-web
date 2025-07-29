@@ -1,13 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import { toast } from 'sonner'
 
-import {
-  editProduct,
-  mapEditProductErrorMessage,
-} from '@/api/products/edit-product'
 import { TagStatus } from '@/components/tag-status'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,6 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateProduct } from '@/hooks/mutations/use-create-product'
+import { useEditProduct } from '@/hooks/mutations/use-edit-product'
 import { useUploadImages } from '@/hooks/mutations/use-upload-images'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -38,7 +33,6 @@ interface ProductFormProps {
 
 export function ProductForm({ initialData, categories }: ProductFormProps) {
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
   const {
     control,
@@ -54,9 +48,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
   const { mutateAsync: createProductFn } = useCreateProduct()
 
-  const { mutateAsync: editProductFn } = useMutation({
-    mutationFn: editProduct,
-  })
+  const { mutateAsync: editProductFn } = useEditProduct()
 
   async function handleProductFormSubmit(data: productFormInputs) {
     const priceInCents = unmaskCurrencyToCents(data.priceInCents)
@@ -86,7 +78,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
     if (initialData) {
       try {
-        const response = await editProductFn({
+        await editProductFn({
           pathParams: { id: initialData.id },
           body: {
             title: data.title,
@@ -97,16 +89,9 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           },
         })
 
-        queryClient.setQueryData(['product', response.product.id], response)
-        queryClient.invalidateQueries({
-          queryKey: ['products-from-seller'],
-          exact: false,
-        })
-        toast.success('Produto editado com sucesso!')
         navigate(`/products`)
-      } catch (error) {
-        const message = mapEditProductErrorMessage(error)
-        if (message) toast.error(message)
+      } catch {
+        // Error already handled in onError
       }
     } else {
       try {
