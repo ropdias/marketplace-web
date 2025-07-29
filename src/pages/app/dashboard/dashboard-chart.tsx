@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar04Icon, UserMultipleIcon } from 'hugeicons-react'
@@ -6,10 +5,7 @@ import { useEffect } from 'react'
 import { CartesianGrid, Line, LineChart, Text, XAxis, YAxis } from 'recharts'
 import { toast } from 'sonner'
 
-import {
-  getViewsPerDayBySellerIn30Days,
-  mapGetViewsPerDayBySellerIn30DaysErrorMessage,
-} from '@/api/metrics/get-views-per-day-by-seller-in-30-days'
+import { mapGetViewsPerDayBySellerIn30DaysErrorMessage } from '@/api/metrics/get-views-per-day-by-seller-in-30-days'
 import {
   ChartConfig,
   ChartContainer,
@@ -18,6 +14,7 @@ import {
 } from '@/components/ui/chart'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SpinnerIcon } from '@/components/ui/spinner-icon'
+import { useViewsPerDayBySellerIn30Days } from '@/hooks/queries/use-views-per-day-by-seller-in-30-days'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -37,13 +34,10 @@ interface ChartPoint {
 export function DashboardChart() {
   const {
     data: viewsPerDayBySellerIn30Days,
-    error: viewsPerDayBySellerIn30DaysError,
-    isError: viewsPerDayBySellerIn30DaysIsError,
+    error,
+    isError,
     isLoading,
-  } = useQuery({
-    queryKey: ['views-per-day-by-seller-in-30-days'],
-    queryFn: getViewsPerDayBySellerIn30Days,
-  })
+  } = useViewsPerDayBySellerIn30Days()
 
   let chartData: ChartPoint[] = []
   let startDate = new Date()
@@ -61,16 +55,11 @@ export function DashboardChart() {
   }
 
   useEffect(() => {
-    if (
-      viewsPerDayBySellerIn30DaysIsError &&
-      viewsPerDayBySellerIn30DaysError
-    ) {
-      const message = mapGetViewsPerDayBySellerIn30DaysErrorMessage(
-        viewsPerDayBySellerIn30DaysError,
-      )
+    if (isError && error) {
+      const message = mapGetViewsPerDayBySellerIn30DaysErrorMessage(error)
       toast.error(message)
     }
-  }, [viewsPerDayBySellerIn30DaysIsError, viewsPerDayBySellerIn30DaysError])
+  }, [isError, error])
 
   return (
     <div className="col-start-2 col-end-3 row-start-1 row-end-4 flex flex-col gap-7 rounded-[20px] bg-white px-6 pb-5 pt-6">
