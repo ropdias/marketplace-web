@@ -6,5 +6,6 @@ export function useProductsAvailableIn30Days() {
   return useQuery({
     queryKey: ['products-available-in-30-days'],
     queryFn: getProductsAvailableIn30Days,
+    staleTime: 1000 * 60 * 5,
   })
 }

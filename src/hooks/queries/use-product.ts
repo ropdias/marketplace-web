@@ -12,5 +12,6 @@ export function useProduct({ productId }: UseProductProps) {
     queryFn: () => getProductById({ id: productId! }),
     enabled: !!productId,
     retry: false,
+    staleTime: 1000 * 60 * 5,
   })
 }

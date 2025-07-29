@@ -19,5 +19,6 @@ export function useAllProductsFromSeller({
         status,
         search,
       }),
+    staleTime: 1000 * 60 * 5,
   })
 }
