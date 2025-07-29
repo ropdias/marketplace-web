@@ -1,34 +1,26 @@
-import { useQuery } from '@tanstack/react-query'
 import { SaleTag02Icon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-import {
-  getProductsSoldIn30Days,
-  mapGetProductsSoldIn30DaysErrorMessage,
-} from '@/api/metrics/get-products-sold-in-30-days'
+import { mapGetProductsSoldIn30DaysErrorMessage } from '@/api/metrics/get-products-sold-in-30-days'
+import { useProductsSoldIn30Days } from '@/hooks/queries/use-products-sold-in-30-days'
 
 import { DashboardItem } from './dashboard-item'
 
 export function DashboardProductsSold() {
   const {
     data: productsSoldIn30Days,
-    error: productsSoldIn30DaysError,
-    isError: productsSoldIn30DaysIsError,
+    error,
+    isError,
     isLoading,
-  } = useQuery({
-    queryKey: ['products-sold-in-30-days'],
-    queryFn: getProductsSoldIn30Days,
-  })
+  } = useProductsSoldIn30Days()
 
   useEffect(() => {
-    if (productsSoldIn30DaysIsError && productsSoldIn30DaysError) {
-      const message = mapGetProductsSoldIn30DaysErrorMessage(
-        productsSoldIn30DaysError,
-      )
+    if (isError && error) {
+      const message = mapGetProductsSoldIn30DaysErrorMessage(error)
       toast.error(message)
     }
-  }, [productsSoldIn30DaysError, productsSoldIn30DaysIsError])
+  }, [error, isError])
 
   return (
     <DashboardItem
