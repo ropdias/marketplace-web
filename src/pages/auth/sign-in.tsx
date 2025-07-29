@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   AccessIcon,
   ArrowRight02Icon,
@@ -11,12 +10,11 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { mapSignInErrorMessage, signIn } from '@/api/sessions/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useSignIn } from '@/hooks/mutations/use-sign-in'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
@@ -31,7 +29,6 @@ export function SignIn() {
   const [showPassword, setShowPassword] = useState(false)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev)
@@ -55,19 +52,15 @@ export function SignIn() {
   const isEmailFilled = !!emailValue
   const isPasswordFilled = !!passwordValue
 
-  const { mutateAsync: authenticate } = useMutation({
-    mutationFn: signIn,
-  })
+  const { mutateAsync: authenticate } = useSignIn()
 
   const handleSignIn = async (data: SignInFormInputs) => {
     try {
       await authenticate({ email: data.email, password: data.password })
-      queryClient.clear() // clear all queries
-      toast.success('Autenticado com sucesso!')
+
       navigate('/')
-    } catch (error) {
-      const message = mapSignInErrorMessage(error)
-      if (message) toast.error(message)
+    } catch {
+      // Error already handled in onError
     }
   }
 
