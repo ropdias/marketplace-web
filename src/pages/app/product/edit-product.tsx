@@ -1,16 +1,12 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft02Icon, Tick02Icon, UnavailableIcon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 
-import {
-  changeProductStatus,
-  mapChangeProductStatusErrorMessage,
-} from '@/api/products/change-product-status'
 import { mapGetProductByIdErrorMessage } from '@/api/products/get-product-by-id'
 import { FormLink } from '@/components/form-link'
+import { useChangeProductStatus } from '@/hooks/mutations/useChangeProductStatus'
 import { useCategories } from '@/hooks/queries/useCategories'
 import { useProduct } from '@/hooks/queries/useProduct'
 import { getTailwindClass } from '@/lib/tailwindUtils'
@@ -23,7 +19,6 @@ import { ProductFormSkeleton } from './product-form-skeleton'
 export function EditProduct() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
   const {
     data: getProductResponse,
@@ -39,9 +34,7 @@ export function EditProduct() {
     error: errorAllCategories,
   } = useCategories()
 
-  const { mutateAsync: changeProductStatusFn } = useMutation({
-    mutationFn: changeProductStatus,
-  })
+  const { mutateAsync: changeProductStatusFn } = useChangeProductStatus()
 
   useEffect(() => {
     if (isErrorProduct && errorProduct) {
@@ -69,16 +62,9 @@ export function EditProduct() {
     status: ProductStatus
   }) => {
     try {
-      const response = await changeProductStatusFn({ id, status })
-      queryClient.setQueryData(['product', response.product.id], response)
-      queryClient.invalidateQueries({
-        queryKey: ['products-from-seller'],
-        exact: false,
-      })
-      toast.success('Status do produto alterado com sucesso!')
-    } catch (error) {
-      const message = mapChangeProductStatusErrorMessage(error)
-      if (message) toast.error(message)
+      await changeProductStatusFn({ id, status })
+    } catch {
+      return
     }
   }
 
