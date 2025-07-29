@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 
+import { getAllCategories } from '@/api/categories/get-all-categories'
 import {
   changeProductStatus,
   mapChangeProductStatusErrorMessage,
@@ -19,6 +20,7 @@ import { cn } from '@/lib/utils'
 import { ProductStatus } from '@/types/product'
 
 import { ProductForm } from './product-form'
+import { ProductFormSkeleton } from './product-form-skeleton'
 
 export function EditProduct() {
   const { id } = useParams()
@@ -27,9 +29,9 @@ export function EditProduct() {
 
   const {
     data: getProductResponse,
-    isLoading,
-    isError,
-    error,
+    isLoading: isLoadingProduct,
+    isError: isErrorProduct,
+    error: errorProduct,
   } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById({ id: id! }),
@@ -37,19 +39,37 @@ export function EditProduct() {
     retry: false,
   })
 
+  const {
+    data: allCategories,
+    isLoading: isLoadingAllCategories,
+    isError: isErrorAllCategories,
+    error: errorAllCategories,
+  } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  })
+
   const { mutateAsync: changeProductStatusFn } = useMutation({
     mutationFn: changeProductStatus,
   })
 
   useEffect(() => {
-    if (isError && error) {
-      const message = mapGetProductByIdErrorMessage(error)
+    if (isErrorProduct && errorProduct) {
+      const message = mapGetProductByIdErrorMessage(errorProduct)
       toast.error(message)
       navigate('/products')
     }
-  }, [error, isError, navigate])
-
-  if (isLoading) return null
+    if (isErrorAllCategories && errorAllCategories) {
+      toast.error('Erro: Não foi possível acessar as categorias dos produtos.')
+      navigate('/products')
+    }
+  }, [
+    errorAllCategories,
+    errorProduct,
+    isErrorAllCategories,
+    isErrorProduct,
+    navigate,
+  ])
 
   const handleChangeProductStatus = async ({
     id,
@@ -155,8 +175,14 @@ export function EditProduct() {
           )}
         </div>
       </div>
-
-      <ProductForm initialData={getProductResponse?.product} />
+      {isLoadingProduct || isLoadingAllCategories ? (
+        <ProductFormSkeleton />
+      ) : getProductResponse?.product && allCategories?.categories ? (
+        <ProductForm
+          initialData={getProductResponse.product}
+          categories={allCategories.categories}
+        />
+      ) : null}
     </>
   )
 }

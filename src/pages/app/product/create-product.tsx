@@ -1,11 +1,36 @@
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
+import { getAllCategories } from '@/api/categories/get-all-categories'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
 import { ProductForm } from './product-form'
+import { ProductFormSkeleton } from './product-form-skeleton'
 
 export function CreateProduct() {
+  const navigate = useNavigate()
+
+  const {
+    data: allCategories,
+    isLoading: isLoadingAllCategories,
+    isError: isErrorAllCategories,
+    error: errorAllCategories,
+  } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  })
+
+  useEffect(() => {
+    if (isErrorAllCategories && errorAllCategories) {
+      toast.error('Erro: Não foi possível acessar as categorias dos produtos.')
+      navigate('/products')
+    }
+  }, [errorAllCategories, isErrorAllCategories, navigate])
+
   return (
     <>
       <Helmet title="Cadastro de Produto" />
@@ -18,7 +43,13 @@ export function CreateProduct() {
           Cadastre um produto para venda no marketplace
         </p>
       </div>
-      <ProductForm />
+      {isLoadingAllCategories ? (
+        <ProductFormSkeleton />
+      ) : (
+        allCategories?.categories && (
+          <ProductForm categories={allCategories.categories} />
+        )
+      )}
     </>
   )
 }

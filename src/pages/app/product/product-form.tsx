@@ -1,12 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import { uploadImages } from '@/api/attachments/upload-images'
-import { getAllCategories } from '@/api/categories/get-all-categories'
 import {
   createProduct,
   mapCreateProductErrorMessage,
@@ -28,7 +26,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
-import { Product, ProductStatus } from '@/types/product'
+import { Category, Product, ProductStatus } from '@/types/product'
 import { currencyApplyMask } from '@/utils/currency-apply-mask'
 import { unmaskCurrencyToCents } from '@/utils/unmask-currency-to-cents'
 
@@ -38,9 +36,10 @@ import { ProductImageUploader } from './product-image-uploader'
 
 interface ProductFormProps {
   initialData?: Product
+  categories: Category[]
 }
 
-export function ProductForm({ initialData }: ProductFormProps) {
+export function ProductForm({ initialData, categories }: ProductFormProps) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -52,15 +51,6 @@ export function ProductForm({ initialData }: ProductFormProps) {
   } = useForm<productFormInputs>({
     resolver: zodResolver(productFormSchema),
     values: getProductFormDefaultValues(initialData),
-  })
-
-  const {
-    data: allCategories,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getAllCategories,
   })
 
   const { mutateAsync: uploadImagesFn } = useMutation({
@@ -150,13 +140,6 @@ export function ProductForm({ initialData }: ProductFormProps) {
       isSubmitting
     )
   }
-
-  useEffect(() => {
-    if (isError && error) {
-      toast.error('Erro: Não foi possível acessar as categorias dos produtos.')
-      navigate('/products')
-    }
-  }, [error, isError, navigate])
 
   return (
     <div className="flex-start flex gap-6">
@@ -263,7 +246,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent>
-                    {allCategories?.categories.map((category) => (
+                    {categories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.title}
                       </SelectItem>
