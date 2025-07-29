@@ -5,10 +5,6 @@ import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import {
-  createProduct,
-  mapCreateProductErrorMessage,
-} from '@/api/products/create-product'
-import {
   editProduct,
   mapEditProductErrorMessage,
 } from '@/api/products/edit-product'
@@ -23,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useCreateProduct } from '@/hooks/mutations/use-create-product'
 import { useUploadImages } from '@/hooks/mutations/use-upload-images'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -55,9 +52,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
   const { mutateAsync: uploadImagesFn } = useUploadImages()
 
-  const { mutateAsync: createProductFn } = useMutation({
-    mutationFn: createProduct,
-  })
+  const { mutateAsync: createProductFn } = useCreateProduct()
 
   const { mutateAsync: editProductFn } = useMutation({
     mutationFn: editProduct,
@@ -123,11 +118,9 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
           attachmentsIds,
         })
 
-        toast.success('Produto cadastrado com sucesso!')
         navigate(`/products`)
-      } catch (error) {
-        const message = mapCreateProductErrorMessage(error)
-        if (message) toast.error(message)
+      } catch {
+        // Error already handled in onError
       }
     }
   }
