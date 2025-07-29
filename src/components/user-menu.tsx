@@ -1,10 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Logout01Icon, UserIcon } from 'hugeicons-react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-import { signOut } from '@/api/sessions/sign-out'
+import { useSignOut } from '@/hooks/mutations/use-sign-out'
 import { useSellerProfile } from '@/hooks/queries/use-seller-profile'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
@@ -20,22 +19,17 @@ import {
 
 export function UserMenu() {
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
 
   const { data: profile, isError, error } = useSellerProfile()
 
-  const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
-    mutationFn: signOut,
-  })
+  const { mutateAsync: signOutFn, isPending: isSigningOut } = useSignOut()
 
   const handleSignOut = async () => {
     try {
       await signOutFn()
-      toast.success('Logout realizado com sucesso.')
     } catch {
-      toast.error('Não foi possível realizar o logout no servidor.')
+      // Error already handled in onError
     } finally {
-      queryClient.clear()
       navigate('/sign-in', { replace: true })
     }
   }
