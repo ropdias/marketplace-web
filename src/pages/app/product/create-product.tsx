@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-import { useCategories } from '@/hooks/queries/useCategories'
+import { useCategories } from '@/hooks/queries/use-categories'
 import { getTailwindClass } from '@/lib/tailwindUtils'
 import { cn } from '@/lib/utils'
 
