@@ -16,7 +16,7 @@ export async function getViewsPerDayBySellerIn30Days() {
   return response.data
 }
 
-export function mapGetViewsPerDayBySellerIn30DaysGetViewsBySellerIn30DaysErrorMessage(
+export function mapGetViewsPerDayBySellerIn30DaysErrorMessage(
   error: unknown,
 ): string {
   if (isAxiosError(error)) {
