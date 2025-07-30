@@ -1,5 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 import { Header } from '@/components/header'
@@ -9,6 +10,8 @@ import { useGlobalAxiosInterceptor } from '@/hooks/use-global-axios-interceptor'
 
 export function AppLayout() {
   useGlobalAxiosInterceptor()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const { isLoading: isLoadingProfile, isError, error } = useSellerProfile()
 
@@ -17,8 +20,10 @@ export function AppLayout() {
       toast.error(
         'Erro: Não foi possível pegar os dados do perfil do vendedor.',
       )
+      queryClient.clear()
+      navigate('/sign-in')
     }
-  }, [error, isError])
+  }, [error, isError, navigate, queryClient])
 
   return (
     <div className="flex min-h-screen min-w-[66.875rem] flex-col gap-8 px-5 antialiased">

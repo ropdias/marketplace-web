@@ -7,5 +7,6 @@ export function useSellerProfile() {
     queryKey: ['seller-profile'],
     queryFn: getSellerProfile,
     staleTime: Infinity,
+    retry: false,
   })
 }
