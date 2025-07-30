@@ -34,7 +34,10 @@ export function EditProduct() {
     error: errorAllCategories,
   } = useCategories()
 
-  const { mutateAsync: changeProductStatusFn } = useChangeProductStatus()
+  const {
+    mutateAsync: changeProductStatusFn,
+    isPending: isPendingChangeProductStatus,
+  } = useChangeProductStatus()
 
   useEffect(() => {
     if (isErrorProduct && errorProduct) {
@@ -87,68 +90,63 @@ export function EditProduct() {
           </p>
         </div>
         <div className="flex items-center gap-4 pr-3">
-          {getProductResponse?.product.status === ProductStatus.SOLD && (
-            <>
-              <FormLink
-                iconLeft={Tick02Icon}
-                onClick={() => {
-                  handleChangeProductStatus({
-                    id: getProductResponse?.product.id,
-                    status: ProductStatus.AVAILABLE,
-                  })
-                }}
-              >
-                Marcar como disponível
-              </FormLink>
-              <FormLink iconLeft={UnavailableIcon} disabled>
-                Produto Vendido
-              </FormLink>
-            </>
-          )}
-          {getProductResponse?.product.status === ProductStatus.AVAILABLE && (
-            <>
-              <FormLink
-                iconLeft={Tick02Icon}
-                onClick={() => {
-                  handleChangeProductStatus({
-                    id: getProductResponse?.product.id,
-                    status: ProductStatus.SOLD,
-                  })
-                }}
-              >
-                Marcar como vendido
-              </FormLink>
-              <FormLink
-                iconLeft={UnavailableIcon}
-                onClick={() => {
-                  handleChangeProductStatus({
-                    id: getProductResponse?.product.id,
-                    status: ProductStatus.CANCELLED,
-                  })
-                }}
-              >
-                Desativar anúncio
-              </FormLink>
-            </>
-          )}
-          {getProductResponse?.product.status === ProductStatus.CANCELLED && (
-            <>
-              <FormLink iconLeft={Tick02Icon} disabled>
-                Produto Desabilitado
-              </FormLink>
-              <FormLink
-                iconLeft={UnavailableIcon}
-                onClick={() => {
-                  handleChangeProductStatus({
-                    id: getProductResponse?.product.id,
-                    status: ProductStatus.AVAILABLE,
-                  })
-                }}
-              >
-                Reativar anúncio
-              </FormLink>
-            </>
-          )}
+          {!isLoadingProduct &&
+            !isLoadingAllCategories &&
+            getProductResponse?.product && (
+              <>
+                <FormLink
+                  iconLeft={Tick02Icon}
+                  onClick={() => {
+                    handleChangeProductStatus({
+                      id: getProductResponse?.product.id,
+                      status:
+                        getProductResponse?.product.status ===
+                        ProductStatus.SOLD
+                          ? ProductStatus.AVAILABLE
+                          : ProductStatus.SOLD,
+                    })
+                  }}
+                  disabled={
+                    isLoadingProduct ||
+                    isLoadingAllCategories ||
+                    isPendingChangeProductStatus ||
+                    getProductResponse?.product.status ===
+                      ProductStatus.CANCELLED
+                  }
+                >
+                  {getProductResponse?.product.status === ProductStatus.SOLD &&
+                    'Marcar como disponível'}
+                  {getProductResponse?.product.status ===
+                    ProductStatus.AVAILABLE && 'Marcar como vendido'}
+                  {getProductResponse?.product.status ===
+                    ProductStatus.CANCELLED && 'Produto Desabilitado'}
+                </FormLink>
+                <FormLink
+                  iconLeft={UnavailableIcon}
+                  onClick={() => {
+                    handleChangeProductStatus({
+                      id: getProductResponse?.product.id,
+                      status:
+                        getProductResponse?.product.status ===
+                        ProductStatus.AVAILABLE
+                          ? ProductStatus.CANCELLED
+                          : ProductStatus.AVAILABLE,
+                    })
+                  }}
+                  disabled={
+                    isPendingChangeProductStatus ||
+                    getProductResponse?.product.status === ProductStatus.SOLD
+                  }
+                >
+                  {getProductResponse?.product.status === ProductStatus.SOLD &&
+                    'Produto Vendido'}
+                  {getProductResponse?.product.status ===
+                    ProductStatus.AVAILABLE && 'Desativar anúncio'}
+                  {getProductResponse?.product.status ===
+                    ProductStatus.CANCELLED && 'Reativar anúncio'}
+                </FormLink>
+              </>
+            )}
         </div>
       </div>
       {isLoadingProduct || isLoadingAllCategories ? (
