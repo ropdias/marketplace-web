@@ -25,7 +25,7 @@ export function DashboardViewsBySeller() {
   return (
     <DashboardItem
       Icon={UserMultipleIcon}
-      iconColor="text-gray-300"
+      iconColor="text-blue-dark"
       count={viewsBySellerIn30Days?.amount ?? 0}
       label="Pessoas visitantes"
       isLoading={isLoading}
