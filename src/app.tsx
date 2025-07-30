@@ -24,7 +24,7 @@ export function App() {
           rel="stylesheet"
         />
       </Helmet>
-      <Toaster richColors />
+      <Toaster richColors theme="light" />
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
